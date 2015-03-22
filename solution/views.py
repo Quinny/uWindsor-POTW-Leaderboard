@@ -3,16 +3,25 @@ from student.models import Student
 import student
 from models import Solution
 from problem.models import Problem
+import problem.views
 import errorpage
 
 def add(request):
+    if len(request.POST['uwinid']) == 0:
+        return problem.views.problem_stats(request, request.POST['year'], request.POST['week'],
+                "Please specify your uWindsor ID")
+    if "source" not in request.FILES:
+         return problem.views.problem_stats(request, request.POST['year'], request.POST['week'],
+                "Please attach your source code")
+
     try:
         s = Student.objects.get(student_id=request.POST['uwinid'])
     except:
         s = Student.objects.create(student_id=request.POST['uwinid'])
     s.solution_set.create(year=request.POST['year'], week=request.POST['week'], source=request.FILES['source'])
-    s.save()
-    return student.views.index(request)
+
+    return problem.views.problem_stats(request, request.POST['year'], request.POST['week'],
+            None, "Your code has been submitted for checking")
 
 def show(request, solution_id):
     try:
