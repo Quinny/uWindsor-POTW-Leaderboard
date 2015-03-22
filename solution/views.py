@@ -2,6 +2,7 @@ from django.shortcuts import render
 from student.models import Student
 import student
 from models import Solution
+from problem.models import Problem
 
 def add(request):
     try:
@@ -14,4 +15,9 @@ def add(request):
 
 def show(request, solution_id):
     s = Solution.objects.get(pk=solution_id)
-    return render(request, "solution/index.html", {"solution" : s})
+    recent_year = Problem.objects.latest('year').year
+    recent_week = Problem.objects.latest('week').week
+    return render(request, "solution/index.html",
+            {"solution" : s,
+             "most_recent" : s.year == recent_year and s.week == recent_week
+            })

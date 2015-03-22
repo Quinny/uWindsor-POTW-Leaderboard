@@ -5,6 +5,9 @@
 <h1> {{ solution.student }}'s solution for {{ solution }}</h1>
 <hr />
 
+{% if most_recent %}
+    <h2>This solution will become public once a new problem has been added</h2>
+{% else %}
 <pre>
     <code>
 {{ solution.source.read }}
@@ -21,4 +24,5 @@
     </div>
 {% endif %}
 
+{% endif %}
 {% endblock %}
