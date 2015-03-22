@@ -2,6 +2,7 @@ from django.shortcuts import render
 from student.models import Student
 from django.db.models import Count
 import errorpage
+import hashlib
 
 def index(request):
     # Maybe do this in the database?
@@ -14,4 +15,8 @@ def profile(request, pk):
         s = Student.objects.get(pk=pk)
     except:
         return errorpage.views.index(request)
-    return render(request, "student/student.html", {"student" : s})
+    return render(request, "student/student.html",
+            {"student" : s,
+             "email_md5" : hashlib.md5(s.student_id + "@uwindsor.ca").hexdigest()
+            }
+        )
