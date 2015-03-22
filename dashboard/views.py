@@ -12,7 +12,7 @@ def index(request):
                 "problems" : Problem.objects.order_by("week"),
                 "pending_submissions" : Solution.objects.filter(accepted=False).count()
                 })
-        return render(request, "dashboard/index.html", {})
+    return render(request, "dashboard/index.html", {})
 
 def auth_login(request):
     if request.method == "POST":
@@ -25,7 +25,7 @@ def auth_login(request):
             return redirect("/dashboard/")
     return redirect("/dashboard/")
 
-
+@login_required
 def logout_page(request):
     logout(request)
     return redirect("/")

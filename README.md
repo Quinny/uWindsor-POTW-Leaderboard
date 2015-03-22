@@ -22,8 +22,7 @@ TODO
 
 * More attractive homepage
 * Better error checking / messages
-* Dropdowns for years and weeks depending on the currently released problems
 * Student profile customisation
-* Contact students based on their profile (maybe make this toggleable)
+* Ability to contact students from their profile (maybe make this toggleable)
 * Hilarious professor related 404 pages (integral part of any website)
 * Automatic code checking? (Probably not)
