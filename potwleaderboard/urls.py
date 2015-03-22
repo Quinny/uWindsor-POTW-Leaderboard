@@ -6,4 +6,5 @@ urlpatterns = patterns('',
     url(r'^dashboard/?', include('dashboard.urls')),
     url(r'^problem/?', include('problem.urls')),
     url(r'^solution/?', include('solution.urls')),
+    url(r'^.*$', include('errorpage.urls')),
 )

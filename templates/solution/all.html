@@ -1,0 +1,20 @@
+{% extends 'staticpages/main.html' %}
+
+{% block content %}
+
+{% for p in problems %}
+    <h1><a href="/problem/{{p.year}}/{{p.week}}">{{ p }}</a></h1>
+    <hr />
+    <table class="table table-striped table-bordered">
+        {% for s in p.solutions %}
+            <tr>
+                <td>
+                    <a href="/solution/{{s.pk}}">{{ s.student }}</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <hr />
+{% endfor %}
+
+{% endblock %}

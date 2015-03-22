@@ -3,10 +3,12 @@ from student.models import Student
 from solution.models import Solution
 from problem.models import Problem
 from datetime import date
+import errorpage
 
 def problem_stats(request, year, week):
-    solutions = Solution.objects.filter(year=year, week=week)
-    return render(request, "problem/index.html",
+    try:
+        solutions = Solution.objects.filter(year=year, week=week)
+        return render(request, "problem/index.html",
             {"solutions" : solutions,
              "year"      : year,
              "week"      : week,
@@ -14,6 +16,8 @@ def problem_stats(request, year, week):
              round(100 * (solutions.count() / float(Student.objects.count())), 2),
              "description": Problem.objects.get(week=week, year=year).description
             })
+    except:
+        return errorpage.views.index(request)
 
 def show_all(request):
     return render(request, "problem/all.html",

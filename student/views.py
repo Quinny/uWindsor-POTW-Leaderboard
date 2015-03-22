@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from student.models import Student
 from django.db.models import Count
+import errorpage
 
 def index(request):
     # Maybe do this in the database?
@@ -9,5 +10,8 @@ def index(request):
         {"students" : top_users })
 
 def profile(request, pk):
-    s = Student.objects.get(pk=pk)
+    try:
+        s = Student.objects.get(pk=pk)
+    except:
+        return errorpage.views.index(request)
     return render(request, "student/student.html", {"student" : s})
