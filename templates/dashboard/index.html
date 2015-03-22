@@ -1,0 +1,16 @@
+{% extends "staticpages/main.html" %}
+
+{% block content %}
+<h1>Dashboard</h1>
+<hr />
+<h2>Login</h2>
+<hr />
+<form method="POST" action="/dashboard/login/">
+    {% csrf_token %}
+    <input class="form-control" name="username" placeholder="Username">
+    <br />
+    <input class="form-control" name="password" type="password" placeholder="password">
+    <br />
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+{% endblock %}

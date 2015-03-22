@@ -1,0 +1,24 @@
+{% extends 'staticpages/main.html' %}
+
+{% block content %}
+
+<h1> {{ solution.student }}'s solution for {{ solution }}</h1>
+<hr />
+
+<pre>
+    <code>
+{{ solution.source.read }}
+    </code>
+</pre>
+
+{% if solution.accepted %}
+    <div class="alert alert-success">
+        Accepted
+    </div>
+{% else %}
+    <div class="alert alert-warning">
+        Pending acceptance
+    </div>
+{% endif %}
+
+{% endblock %}

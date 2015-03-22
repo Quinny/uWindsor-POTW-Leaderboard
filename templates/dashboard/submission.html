@@ -1,0 +1,30 @@
+{% extends 'staticpages/main.html' %}
+
+{% block content %}
+
+<h1>{{ submission.student }} {{ submission}}</h1>
+<hr />
+
+<pre>
+    <code>
+{{ submission.source.read }}
+    </code>
+</pre>
+
+<form method="POST" action="/dashboard/submission/accept/">
+    {% csrf_token %}
+    <input type="hidden" name="pk" value="{{submission.pk}}">
+    <button type="submit" class="btn btn-primary">
+        Accept
+    </button>
+</form>
+
+<form method="POST" action="/dashboard/submission/decline/">
+    {% csrf_token %}
+    <input type="hidden" name="pk" value="{{submission.pk}}">
+    <button type="submit" class="btn">
+        Decline
+    </button>
+</form>
+
+{% endblock %}

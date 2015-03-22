@@ -1,0 +1,19 @@
+{% extends "staticpages/main.html" %}
+
+{% block content %}
+<h1>{{ student }} <span class="lead">{{student.solution_set.count}} solved</span></h1>
+<hr />
+
+<table class="table table-striped table-bordered">
+    {% for sol in student.solution_set.all %}
+        <tr><td>{{sol}}</td></tr>
+    {% endfor %}
+</table>
+<form method="POST" action="/dashboard/addsolution/">
+    {% csrf_token %}
+    <input class="form-control" type="hidden" name="pk" value="{{student.pk}}">
+    <input class="form-control" name="year" placeholder="Year">
+    <input class="form-control" name="week" placeholder="Week">
+    <button type="submit" class="btn btn-default">Add Solution</button>
+</form>
+{% endblock %}

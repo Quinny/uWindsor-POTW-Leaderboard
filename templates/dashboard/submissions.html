@@ -1,0 +1,17 @@
+{% extends 'staticpages/main.html' %}
+
+{% block content %}
+
+<table class="table table-striped table-bordered">
+    {% for sub in submissions %}
+        <tr>
+            <td>
+                <a href="/dashboard/submission/{{sub.pk}}">
+                    {{sub.student}} {{sub}}
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
