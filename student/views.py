@@ -10,9 +10,9 @@ def index(request):
     return render(request, "student/index.html",
         {"students" : top_users })
 
-def profile(request, pk):
+def profile(request, uid):
     try:
-        s = Student.objects.get(pk=pk)
+        s = Student.objects.get(student_id=uid)
     except:
         return errorpage.views.index(request)
     return render(request, "student/student.html",
