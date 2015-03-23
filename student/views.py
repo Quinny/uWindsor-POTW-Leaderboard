@@ -70,6 +70,11 @@ def verify(request, uwinid, verify_hash):
         s_code = get_random_string(length=10)
         Student.objects.create(student_id = uwinid,
                 submit_code = s_code)
+        send_mail("uWindsor POTW - Submission Code",
+                "Your submission code is " + s_code + ", keep it safe.",
+                "noreply@potw.quinnftw.com",
+                [uwinid + "@uwindsor.ca"],
+                fail_silently=False)
         return render(request, "student/verify_success.html", {"code" : s_code})
     else:
         return render(request, "student/verify_success.html",
