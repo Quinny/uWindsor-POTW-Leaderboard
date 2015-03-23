@@ -1,0 +1,18 @@
+{% extends "staticpages/main.html" %}
+
+{% block content %}
+
+<h1>Verify your uWindsor ID</h1>
+<hr />
+<span class="lead">
+    An email will be sent to your uWindsor email to verify your ID
+</span>
+<br /><br />
+<form method="POST" action="/student/sendmail/">
+    {% csrf_token %}
+    <input placeholder="uWindsor ID" class="form-control" name="uwinid">
+    <br />
+    <button type="submit" class="btn btn-primary">Verify</button>
+</form>
+
+{% endblock %}

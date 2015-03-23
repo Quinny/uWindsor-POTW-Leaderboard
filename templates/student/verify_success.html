@@ -1,0 +1,11 @@
+{% extends "staticpages/main.html" %}
+
+{% block content %}
+
+{% if code %}
+    <h1>Your submission code is:</h1>
+    <hr />
+    <h1>{{ code }}</h1>
+    <h2><i>Do not lose this!  You will need it to submit solutions!</i></h2>
+{% endif %}
+{% endblock %}

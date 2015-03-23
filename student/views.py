@@ -1,8 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from student.models import Student
 from django.db.models import Count
+from django.conf import settings
+from django.core.mail import send_mail
+from django.utils.crypto import get_random_string
 import errorpage
 import hashlib
+import hmac
+import datetime
 
 def index(request):
     # Maybe do this in the database?
@@ -20,3 +25,52 @@ def profile(request, uid):
              "email_md5" : hashlib.md5(s.student_id + "@uwindsor.ca").hexdigest()
             }
         )
+
+def sign_up(request, error=None, success=None):
+    return render(request, "student/signup.html",
+            {"error" : error,
+             "success" : success
+            }
+        )
+
+def send_verify(request):
+    if 'uwinid' not in request.POST or len(request.POST['uwinid']) == 0:
+        return sign_up(request, "Please enter your uWindsor ID", {})
+    try:
+        u = Student.objects.get(student_id=request.POST['uwinid'])
+        if u is not None:
+            return sign_up(request, "That uWindsor ID is already registered", {})
+    except:
+        pass
+    now = datetime.datetime.now()
+    verify_hash = hmac.new(settings.EMAIL_SECRET,
+            request.POST['uwinid'] + str(now.hour)).hexdigest()
+    send_mail("uWindsor POTW - Confirm ID",
+            "Click the following link to confirm your uWindsor ID and begin"+\
+            " submitting your problem of the week solutions.\n"+\
+            settings.SITE_URL+"/student/verify/" + request.POST['uwinid'] + "/"+\
+            verify_hash,
+            "noreply@potw.quinnftw.com",
+            [request.POST['uwinid'] + "@uwindsor.ca"],
+            fail_silently=False)
+    return sign_up(request, None, "Email Sent")
+
+def verify(request, uwinid, verify_hash):
+    try:
+        # Because at this point they are just spam refreshing the page
+        u = Student.objects.get(student_id=uwinid)
+        if u is not None:
+            return redirect("/")
+    except:
+        pass
+    now = datetime.datetime.now()
+    check = hmac.new(settings.EMAIL_SECRET,
+            uwinid + str(now.hour)).hexdigest()
+    if hmac.compare_digest(str(check), str(verify_hash)):
+        s_code = get_random_string(length=10)
+        Student.objects.create(student_id = uwinid,
+                submit_code = s_code)
+        return render(request, "student/verify_success.html", {"code" : s_code})
+    else:
+        return render(request, "student/verify_success.html",
+                {"error" : "This link is either expiried or invalid"})

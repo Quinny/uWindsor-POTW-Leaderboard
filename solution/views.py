@@ -7,18 +7,21 @@ import problem.views
 import errorpage
 
 def add(request):
-    if len(request.POST['uwinid']) == 0:
+    if len(request.POST['submitcode']) == 0:
         return problem.views.problem_stats(request, request.POST['year'], request.POST['week'],
-                "Please specify your uWindsor ID")
+                "Please specify your submission code")
     if "source" not in request.FILES:
          return problem.views.problem_stats(request, request.POST['year'], request.POST['week'],
                 "Please attach your source code")
 
     try:
-        s = Student.objects.get(student_id=request.POST['uwinid'])
+        s = Student.objects.get(submit_code=request.POST['submitcode'])
     except:
-        s = Student.objects.create(student_id=request.POST['uwinid'])
-    s.solution_set.create(year=request.POST['year'], week=request.POST['week'], source=request.FILES['source'])
+         return problem.views.problem_stats(request, request.POST['year'], request.POST['week'],
+                 "Invalid submission code")
+
+    s.solution_set.create(year=request.POST['year'], week=request.POST['week'],
+            source=request.FILES['source'])
 
     return problem.views.problem_stats(request, request.POST['year'], request.POST['week'],
             None, "Your code has been submitted for checking")
