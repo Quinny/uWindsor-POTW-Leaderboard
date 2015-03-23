@@ -5,15 +5,6 @@
 <h1> {{ solution.student }}'s solution for {{ solution }}</h1>
 <hr />
 
-{% if most_recent %}
-    <h2>This solution will become public once a new problem has been added</h2>
-{% else %}
-<pre>
-    <code>
-{{ solution.source.read }}
-    </code>
-</pre>
-
 {% if solution.accepted %}
     <div class="alert alert-success">
         Accepted
@@ -24,5 +15,14 @@
     </div>
 {% endif %}
 
+
+{% if most_recent %}
+    <h2>This solution will become public once a new problem has been added</h2>
+{% else %}
+<pre>
+    <code>
+{{ solution.source.read }}
+    </code>
+</pre>
 {% endif %}
 {% endblock %}
