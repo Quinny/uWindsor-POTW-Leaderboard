@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from student.models import Student
 from problem.models import Problem
 from solution.models import Solution
+from django.core.mail import send_mail
 
 def index(request):
     if request.user.is_authenticated():
@@ -88,12 +89,20 @@ def accept_sub(request):
     s = Solution.objects.get(pk=request.POST['pk'])
     s.accepted = True
     s.save()
-    # EMAIL PERSON HERE TO TELL THEM?
+    send_mail('uWindsor POTW - Submission Accepted',
+            "Your submission for " + str(s) + " has been accepted!  Good work!",
+            'noreply@potw.quinnftw.com',
+            [str(s.student) + "@uwindsor.ca"],
+            fail_silently=False)
     return redirect('/dashboard/submission/all')
 
 @login_required
 def decline_sub(request):
     s = Solution.objects.get(pk=request.POST['pk'])
     s.delete()
-    # EMAIL PERSON HERE TO TELL THEM?
+    send_mail('uWindsor POTW - Submission Declined',
+            "Your submission for " + str(s) + " has been declined!  Give it another shot!",
+            'noreply@potw.quinnftw.com',
+            [str(s.student) + "@uwindsor.ca"],
+            fail_silently=False)
     return redirect('/dashboard/submission/all')

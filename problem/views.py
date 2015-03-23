@@ -5,7 +5,7 @@ from problem.models import Problem
 from datetime import date
 import errorpage
 
-def problem_stats(request, year, week, error=None):
+def problem_stats(request, year, week, error=None, success=None):
     try:
         solutions = Solution.objects.filter(year=year, week=week, accepted=True)
         return render(request, "problem/index.html",
@@ -15,7 +15,8 @@ def problem_stats(request, year, week, error=None):
              "percent" :
              round(100 * (solutions.count() / float(Student.objects.count())), 2),
              "description": Problem.objects.get(week=week, year=year).description,
-             "error"      : error
+             "error"      : error,
+             "success"    : success
             })
     except:
         return errorpage.views.index(request)
