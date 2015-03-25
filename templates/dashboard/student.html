@@ -1,4 +1,4 @@
-{% extends "staticpages/main.html" %}
+{% extends "dashboard/main.html" %}
 
 {% block content %}
 <h1>{{ student }} <span class="lead">{{student.solution_set.count}} solved</span></h1>
@@ -12,8 +12,11 @@
 <form method="POST" action="/dashboard/addsolution/">
     {% csrf_token %}
     <input class="form-control" type="hidden" name="pk" value="{{student.pk}}">
+    <br />
     <input class="form-control" name="year" placeholder="Year">
+    <br />
     <input class="form-control" name="week" placeholder="Week">
+    <br />
     <button type="submit" class="btn btn-default">Add Solution</button>
 </form>
 {% endblock %}

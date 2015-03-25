@@ -1,6 +1,18 @@
 {% extends "staticpages/main.html" %}
 
 {% block content %}
+{% if error %}
+    <div class="alert alert-danger">
+        {{ error }}
+    </div>
+{% endif %}
+
+{% if success %}
+    <div class="alert alert-success">
+        {{ success }}
+    </div>
+{% endif %}
+
 <h1>Dashboard</h1>
 <hr />
 <h2>Login</h2>

@@ -1,0 +1,17 @@
+{% extends "dashboard/main.html" %}
+
+{% block content %}
+
+<h2>Student List</h2>
+<hr />
+<table class="table table-striped table-bordered">
+    {% for s in students %}
+    <tr>
+        <td>
+            <a href="/dashboard/student/{{ s.pk }}">{{ s }}</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

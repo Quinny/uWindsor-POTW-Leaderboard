@@ -6,12 +6,13 @@ from problem.models import Problem
 from solution.models import Solution
 from django.core.mail import send_mail
 
-def index(request):
+def index(request, error = None, success = None):
     if request.user.is_authenticated():
         return render(request, "dashboard/admin.html",
-                {"students" : Student.objects.all(),
-                "problems" : Problem.objects.order_by("week"),
-                "pending_submissions" : Solution.objects.filter(accepted=False).count()
+                {"pending_submissions" :
+                    Solution.objects.filter(accepted=False).count(),
+                 "error" : error,
+                 "success" : success
                 })
     return render(request, "dashboard/index.html", {})
 
@@ -64,7 +65,7 @@ def add_problem(request):
 @login_required
 def edit_problem(request, pk):
     p = Problem.objects.get(pk=pk)
-    return render(request, "dashboard/editproblem.html",{ "problem" : p})
+    return render(request, "dashboard/problem.html",{ "problem" : p})
 
 @login_required
 def update_problem(request):
@@ -79,6 +80,18 @@ def update_problem(request):
 @login_required
 def all_submissions(request):
     return render(request, "dashboard/submissions.html", {"submissions" : Solution.objects.filter(accepted=False)})
+
+@login_required
+def all_students(request):
+    return render(request, "dashboard/students.html",
+            {"students" : Student.objects.all()}
+        )
+
+@login_required
+def all_problems(request):
+    return render(request, "dashboard/problems.html",
+            {"problems" : Problem.objects.order_by("week")}
+        )
 
 @login_required
 def mark_submission(request, solution_id):
@@ -106,3 +119,14 @@ def decline_sub(request):
             [str(s.student) + "@uwindsor.ca"],
             fail_silently=False)
     return redirect('/dashboard/submission/all')
+
+@login_required
+def change_password(request):
+    u = authenticate(username = request.user.username,
+            password = request.POST['current-password'])
+    if u is not None:
+        request.user.set_password(request.POST['new-password'])
+        request.user.save()
+        return index(request, None, "Password changed")
+    else:
+        return index(request, "Wrong current password")

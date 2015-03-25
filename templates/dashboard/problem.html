@@ -1,11 +1,14 @@
-{% extends "staticpages/main.html" %}
+{% extends "dashboard/main.html" %}
 
 {% block content %}
 <form method="POST" action="/dashboard/updateproblem/">
     {% csrf_token %}
     <input type="hidden" name="pk" value="{{problem.pk}}">
+    <br />
     <input class="form-control" name="week" value="{{problem.week}}">
+    <br />
     <input class="form-control" name="year" value="{{problem.year}}">
+    <br />
     <textarea rows="10" cols="100" name="description">{{problem.description}}</textarea>
     <br />
     <button type="submit" class="btn btn-primary">Update</button>
