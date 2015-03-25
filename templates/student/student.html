@@ -9,12 +9,12 @@
     <a class="nodec" href="mailto:{{student}}@uwindsor.ca">
         <i class='glyphicon glyphicon-envelope'></i>
     </a>
-    <span class="lead">{{student.solution_set.count}} solved</span>
+    <span class="lead">{{student.solution_count}} solved</span>
 </h1>
 <hr />
 
 <table class="table table-striped table-bordered">
-    {% for sol in student.solution_set.all %}
+    {% for sol in solutions %}
         <tr>
             <td>
                 <a href="/solution/{{ sol.pk }}">

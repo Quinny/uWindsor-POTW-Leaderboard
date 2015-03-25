@@ -23,7 +23,8 @@ def profile(request, uid):
         return errorpage.views.index(request)
     return render(request, "student/student.html",
             {"student" : s,
-             "email_md5" : hashlib.md5(s.student_id + "@uwindsor.ca").hexdigest()
+             "email_md5" : hashlib.md5(s.student_id + "@uwindsor.ca").hexdigest(),
+             "solutions" : s.solution_set.order_by("week")
             }
         )
 
