@@ -40,4 +40,4 @@ def show(request, solution_id):
             })
 
 def all(request):
-    return render(request, "solution/all.html", {"problems" : Problem.objects.order_by("week")})
+    return render(request, "solution/all.html", {"problems" : Problem.objects.order_by("-week")})
