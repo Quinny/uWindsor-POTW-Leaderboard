@@ -6,6 +6,7 @@ class Solution(models.Model):
     year = models.IntegerField()
     week = models.IntegerField()
     accepted = models.BooleanField(default=False)
+    public  = models.BooleanField(default=False)
     # Default set just to make django happy
     source  = models.FileField(upload_to = "source/%Y/%m/%d", default='settings.MEDIA_ROOT/helloworld.c')
 

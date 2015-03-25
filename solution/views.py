@@ -21,7 +21,7 @@ def add(request):
                  "Invalid submission code")
 
     s.solution_set.create(year=request.POST['year'], week=request.POST['week'],
-            source=request.FILES['source'])
+            source=request.FILES['source'], public = 'public' in request.POST)
 
     return problem.views.problem_stats(request, request.POST['year'], request.POST['week'],
             None, "Your code has been submitted for checking")
@@ -35,7 +35,8 @@ def show(request, solution_id):
     recent_week = Problem.objects.latest('week').week
     return render(request, "solution/index.html",
             {"solution" : s,
-             "most_recent" : s.year == recent_year and s.week == recent_week
+             "most_recent" : s.year == recent_year and s.week == recent_week,
+             "public"      : s.public
             })
 
 def all(request):

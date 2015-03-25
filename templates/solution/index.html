@@ -15,14 +15,17 @@
     </div>
 {% endif %}
 
-
-{% if most_recent %}
-    <h2>This solution will become public once a new problem has been added</h2>
-{% else %}
-<pre>
-    <code>
+{% if public %}
+    {% if most_recent %}
+        <h2>This solution will become public once a new problem has been added</h2>
+    {% else %}
+    <pre>
+        <code>
 {{ solution.source.read }}
-    </code>
-</pre>
+        </code>
+    </pre>
+    {% endif %}
+{% else %}
+    <h2>This solution is not public</h2>
 {% endif %}
 {% endblock %}
