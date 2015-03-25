@@ -8,6 +8,7 @@ import errorpage
 import hashlib
 import hmac
 import datetime
+import re
 
 def index(request):
     # Maybe do this in the database?
@@ -36,6 +37,9 @@ def sign_up(request, error=None, success=None):
 def send_verify(request):
     if 'uwinid' not in request.POST or len(request.POST['uwinid']) == 0:
         return sign_up(request, "Please enter your uWindsor ID", {})
+    uwinid_check = re.compile("(\d|[a-zA-Z])+$")
+    if uwinid_check.match(request.POST['uwinid']) == None:
+        return sign_up(request, "That uWindsor ID is invalid", {})
     try:
         u = Student.objects.get(student_id=request.POST['uwinid'])
         if u is not None:
