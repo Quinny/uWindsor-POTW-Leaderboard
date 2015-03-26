@@ -1,20 +1,56 @@
 {% extends "staticpages/main.html" %}
 
 {% block content %}
-<h1>Top Problem Solvers</h1>
+<!--<h1>uWindsor POTW</h1>
+<hr />
+Each week (or so) the Computer Science Society at the University of Windsor releases a new 
+"problem of the week."  Each student that solves this problem gets entered in a draw and will be eligible 
+to win some awesome prizes!
+<br /><br />
+To get in on this action, <a href="/signup/">Sign up</a>, get your confirmation code, and start solving!
 <br />
-<table class="table table-striped table-bordered">
-    <tr><th>Student ID</th><th>Solutions</th></tr>
-    {% for s in students %}
-        <tr>
-            <td>
-                <a href="/student/{{ s }}/">{{ s }}</a>
-            </td>
-            <td>
-                {{ s.solution_count }}
-            </td>
-        </tr>
-    {% endfor %}
-</table>
+<br />
+<br />-->
+<h1>This Week's Problem</h1>
+<hr />
+
+{{ problem.description | safe}}
+<br /><br />
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#submissionModal">
+    Submit Solution
+</button>
+
+
+<!-- Modal -->
+<div class="modal fade" id="submissionModal" tabindex="-1" role="dialog" aria-labelledby="submissionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Submission for week {{ problem.week }}</h4>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="/solution/add/" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="week" value="{{ problem.week }}">
+            <input type="hidden" name="year" value="{{ problem.year }}">
+            <input name="submitcode" class="form-control" placeholder="Submission code">
+            <br />
+            <input type="checkbox" name="public" checked> Make my solution public
+            <br />
+            <br />
+            <span class="btn btn-default btn-file">
+                <input type="file" name="source">
+            </span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    </div>
+    </div>
+  </div>
+</div>
+
 
 {% endblock %}

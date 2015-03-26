@@ -1,0 +1,21 @@
+{% extends "staticpages/main.html" %}
+
+{% block content %}
+<h1>Top Problem Solvers</h1>
+<hr />
+<br />
+<table class="table table-striped table-bordered">
+    <tr><th>Student ID</th><th>Solutions</th></tr>
+    {% for s in students %}
+        <tr>
+            <td>
+                <a href="/student/{{ s }}/">{{ s }}</a>
+            </td>
+            <td>
+                {{ s.solution_count }}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

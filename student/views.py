@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from student.models import Student
+from problem.models import Problem
 from django.db.models import Count
 from django.conf import settings
 from django.core.mail import send_mail
@@ -11,9 +12,13 @@ import datetime
 import re
 
 def index(request):
+    problem = Problem.objects.order_by("-week")[0]
+    return render(request, "student/index.html", {"problem" : problem})
+
+def solvers(request):
     # Maybe do this in the database?
     top_users = sorted(Student.objects.all(), key=lambda s: s.solution_count, reverse=True)
-    return render(request, "student/index.html",
+    return render(request, "student/solvers.html",
         {"students" : top_users })
 
 def profile(request, uid):

@@ -1,7 +1,9 @@
 from django.conf.urls import patterns, include, url
+import student
 
 urlpatterns = patterns('',
     url(r'^$', include('student.urls')),
+    url(r'^solvers/?$', student.views.solvers),
     url(r'^student/?', include('student.urls')),
     url(r'^dashboard/?', include('dashboard.urls')),
     url(r'^problem/?', include('problem.urls')),
