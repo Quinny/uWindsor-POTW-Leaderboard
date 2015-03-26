@@ -20,11 +20,20 @@ def add(request):
          return problem.views.problem_stats(request, request.POST['year'], request.POST['week'],
                  "Invalid submission code")
 
+    extra = ""
+    try:
+        sol = s.solution_set.filter(year = request.POST['year'], week = request.POST['week'])
+        sol.delete()
+        print "deleted"
+        extra = "<br />Your previous submission for this problem has been deleted"
+    except Exception as e:
+        print e
+
     s.solution_set.create(year=request.POST['year'], week=request.POST['week'],
             source=request.FILES['source'], public = 'public' in request.POST)
 
     return problem.views.problem_stats(request, request.POST['year'], request.POST['week'],
-            None, "Your code has been submitted for checking")
+            None, "Your code has been submitted for checking" + extra)
 
 def show(request, solution_id):
     try:
