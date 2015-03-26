@@ -24,10 +24,9 @@ def add(request):
     try:
         sol = s.solution_set.filter(year = request.POST['year'], week = request.POST['week'])
         sol.delete()
-        print "deleted"
         extra = "<br />Your previous submission for this problem has been deleted"
-    except Exception as e:
-        print e
+    except:
+        pass
 
     s.solution_set.create(year=request.POST['year'], week=request.POST['week'],
             source=request.FILES['source'], public = 'public' in request.POST)
