@@ -22,7 +22,7 @@ def add(request):
 
     extra = ""
     try:
-        sol = s.solution_set.filter(year = request.POST['year'], week = request.POST['week'])
+        sol = s.solution_set.get(year = request.POST['year'], week = request.POST['week'])
         sol.delete()
         extra = "<br />Your previous submission for this problem has been deleted"
     except:
