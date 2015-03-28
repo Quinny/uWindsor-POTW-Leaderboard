@@ -1,14 +1,14 @@
 {% extends "staticpages/main.html" %}
 
 {% block content %}
-<h1>{{year}} Week {{week}}
+<h1>{{ problem }}
     <span class="lead">Solved by: {{ solutions.count }} Student{{ solutions.count | pluralize}}
         ({{ percent }}% of total)
     </span>
 </h1>
 <hr />
 
-{{ description | safe }}
+{{ problem.description | safe }}
 <br /><br />
 
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#submissionModal">
