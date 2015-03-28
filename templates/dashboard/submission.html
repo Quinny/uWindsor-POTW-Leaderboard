@@ -5,7 +5,11 @@
 <h1>{{ submission.student }} {{ submission}}</h1>
 <hr />
 
-<pre>
+<button class="btn btn-default" id="select" onclick="SelectText('source')">
+    Select source
+</button>
+<br /><br />
+<pre id="source">
     <code>
 {{ submission.source.read }}
     </code>
@@ -29,5 +33,25 @@
     <br />
     <textarea name="reason" placeholder="Reason for declining" rows="10" cols="50"></textarea>
 </form>
+
+<script>
+function SelectText(element) {
+    var doc = document
+        , text = doc.getElementById(element)
+        , range, selection
+    ;    
+    if (doc.body.createTextRange) {
+        range = document.body.createTextRange();
+        range.moveToElementText(text);
+        range.select();
+    } else if (window.getSelection) {
+        selection = window.getSelection();        
+        range = document.createRange();
+        range.selectNodeContents(text);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+}
+</script>
 
 {% endblock %}
