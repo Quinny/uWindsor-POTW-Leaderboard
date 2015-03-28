@@ -1,0 +1,33 @@
+{% extends 'dashboard/main.html' %}
+
+{% block content %}
+
+<h1>Draw Settings</h1>
+<hr />
+
+<form method="POST" action="/dashboard/draw/gen/">
+    {% csrf_token %}
+    <select name="year" class="form-control">
+    <option  disabled selected>Year:</option>
+    {% for year in years %}
+        <option value="{{ year }}">{{ year }}</option>
+    {% endfor %}
+    </select>
+    <br />
+    <select name="start-week" class="form-control">
+        <option disabled selected>Start week:</option>
+        {% for week in weeks %}
+            <option value="{{ week }}">{{ week }}</option>
+        {% endfor %}
+    </select>
+    <br />
+    <select name="end-week" class="form-control">
+        <option disabled selected>End week:</option>
+        {% for week in weeks %}
+            <option value="{{ week }}">{{ week }}</option>
+        {% endfor %}
+    </select>
+    <br />
+    <button type="submit" class="btn btn-primary">Find Winner</button>
+</form>
+{% endblock %}

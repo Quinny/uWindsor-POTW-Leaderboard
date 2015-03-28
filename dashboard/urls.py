@@ -18,4 +18,6 @@ urlpatterns = patterns('',
     url(r'^students/?$', views.all_students),
     url(r'^problems/?$', views.all_problems),
     url(r'^changepassword/?$', views.change_password),
+    url(r'^draw/gen/?$', views.draw_gen),
+    url(r'^draw/?$', views.draw),
 )

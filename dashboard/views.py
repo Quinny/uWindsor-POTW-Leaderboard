@@ -5,6 +5,7 @@ from student.models import Student
 from problem.models import Problem
 from solution.models import Solution
 from django.core.mail import send_mail
+import random
 
 def index(request, error = None, success = None):
     if request.user.is_authenticated():
@@ -116,7 +117,9 @@ def decline_sub(request):
     s = Solution.objects.get(pk=request.POST['pk'])
     s.delete()
     send_mail('uWindsor POTW - Submission Declined',
-            "Your submission for " + str(s) + " has been declined!  Give it another shot!",
+            "Your submission for " + str(s) + " has been declined!\n"\
+            +"Reason: " + request.POST['reason'] + "\n"\
+            +"Give it another shot!",
             'noreply@potw.quinnftw.com',
             [str(s.student) + "@uwindsor.ca"],
             fail_silently=False)
@@ -132,3 +135,16 @@ def change_password(request):
         return index(request, None, "Password changed")
     else:
         return index(request, "Wrong current password")
+
+@login_required
+def draw(request):
+    years = Problem.objects.order_by("year").values_list("year", flat=True).distinct()
+    weeks = Problem.objects.order_by("week").values_list("week", flat=True).distinct()
+    return render(request, "dashboard/draw.html",
+            {"years" : years, "weeks" : weeks})
+
+def draw_gen(request):
+    candidates = Solution.objects.filter(year=request.POST['year'], accepted=True,
+            week__range=(request.POST['start-week'], request.POST['end-week']))
+    winner = random.choice(candidates).student
+    return render(request, "dashboard/winner.html", {"winner" : winner})
