@@ -9,14 +9,17 @@ def problem_stats(request, year, week, error=None, success=None):
     try:
         solutions = Solution.objects.filter(year=year, week=week, accepted=True)
         problem = Problem.objects.get(year=year, week=week)
-        return render(request, "problem/index.html",
-            {"solutions" : solutions,
-             "problem"   : problem,
-             "percent" :
-             round(100 * (solutions.count() / float(Student.objects.count())), 2),
-             "error"      : error,
-             "success"    : success
-            })
+        context = {
+            "solutions": solutions,
+            "problem":   problem,
+            "percent":
+            round(100 * (solutions.count() / float(Student.objects.count())), 2),
+            "error":     error,
+            "success":   success,
+        }
+        if "submitcode" in request.session:
+            context["submitcode"] = request.session["submitcode"]
+        return render(request, "problem/index.html", context)
     except:
         return errorpage.views.index(request)
 

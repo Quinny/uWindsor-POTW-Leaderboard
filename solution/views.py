@@ -14,6 +14,11 @@ def add(request):
          return problem.views.problem_stats(request, request.POST['year'], request.POST['week'],
                 "Please attach your source code")
 
+    if "remember" in request.POST:
+        request.session["submitcode"] = request.POST['submitcode']
+    elif ("remember" not in request.POST) and ("submitcode" in request.session):
+        del request.session["submitcode"]
+
     try:
         s = Student.objects.get(submit_code=request.POST['submitcode'])
     except:

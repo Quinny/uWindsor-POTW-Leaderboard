@@ -13,7 +13,12 @@ import re
 
 def index(request):
     problem = Problem.objects.order_by("-week")[0]
-    return render(request, "student/index.html", {"problem" : problem})
+    context = {
+        "problem": problem,
+    }
+    if "submitcode" in request.session:
+        context["submitcode"] = request.session["submitcode"]
+    return render(request, "student/index.html", context)
 
 def solvers(request):
     # Maybe do this in the database?
