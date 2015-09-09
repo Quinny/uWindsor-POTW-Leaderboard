@@ -24,11 +24,12 @@ def problem_stats(request, year, week, error=None, success=None):
         return errorpage.views.index(request)
 
 def show_all(request):
-    return render(request, "problem/all.html",
-            {"problems" : Problem.objects.order_by("week"),
-             "labels"   : graph_labels(),
-             "data"     : graph_data()
-            })
+    context = {
+        "problems": Problem.objects.order_by("week"),
+         "labels":  graph_labels(),
+         "data":    graph_data()
+    }
+    return render(request, "problem/all.html", context)
 
 def graph_labels():
     problems = Problem.objects.order_by("week")

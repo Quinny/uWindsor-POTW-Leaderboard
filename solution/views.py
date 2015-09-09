@@ -46,11 +46,12 @@ def show(request, solution_id):
         return errorpage.views.index(request)
     recent_year = Problem.objects.latest('year').year
     recent_week = Problem.objects.latest('week').week
-    return render(request, "solution/index.html",
-            {"solution" : s,
-             "most_recent" : s.year == recent_year and s.week == recent_week,
-             "public"      : s.public
-            })
+    context = {
+        "solution":    s,
+        "most_recent": s.year == recent_year and s.week == recent_week,
+        "public":      s.public
+    }
+    return render(request, "solution/index.html", context)
 
 def all(request):
     return render(request, "solution/all.html", {"problems" : Problem.objects.order_by("-week")})

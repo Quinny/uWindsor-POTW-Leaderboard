@@ -9,12 +9,13 @@ import random
 
 def index(request, error = None, success = None):
     if request.user.is_authenticated():
-        return render(request, "dashboard/admin.html",
-                {"pending_submissions" :
-                    Solution.objects.filter(accepted=False).count(),
-                 "error" : error,
-                 "success" : success
-                })
+        context = {
+            "pending_submissions":
+                Solution.objects.filter(accepted=False).count(),
+             "error":              error,
+             "success":            success
+        }
+        return render(request, "dashboard/admin.html", context)
     return render(request, "dashboard/index.html", {})
 
 def auth_login(request):

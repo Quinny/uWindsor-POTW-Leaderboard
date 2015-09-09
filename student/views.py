@@ -23,27 +23,27 @@ def index(request):
 def solvers(request):
     # Maybe do this in the database?
     top_users = sorted(Student.objects.all(), key=lambda s: s.solution_count, reverse=True)
-    return render(request, "student/solvers.html",
-        {"students" : top_users })
+    return render(request, "student/solvers.html", {"students" : top_users })
 
 def profile(request, uid):
     try:
         s = Student.objects.get(student_id=uid)
     except:
         return errorpage.views.index(request)
-    return render(request, "student/student.html",
-            {"student" : s,
-             "email_md5" : hashlib.md5(s.student_id + "@uwindsor.ca").hexdigest(),
-             "solutions" : s.solution_set.order_by("week")
-            }
-        )
+
+    context = {
+        "student":   s,
+        "email_md5": hashlib.md5(s.student_id + "@uwindsor.ca").hexdigest(),
+        "solutions": s.solution_set.order_by("week")
+    }
+    return render(request, "student/student.html", context)
 
 def sign_up(request, error=None, success=None):
-    return render(request, "student/signup.html",
-            {"error" : error,
-             "success" : success
-            }
-        )
+    context = {
+        "error":   error,
+        "success": success,
+    }
+    return render(request, "student/signup.html", context)
 
 def send_verify(request):
     if 'uwinid' not in request.POST or len(request.POST['uwinid']) == 0:
@@ -92,5 +92,4 @@ def verify(request, uwinid, verify_hash):
                 fail_silently=False)
         return render(request, "student/verify_success.html", {"code" : s_code})
     else:
-        return render(request, "student/verify_success.html",
-                {"error" : "This link is either expiried or invalid"})
+        return render(request, "student/verify_success.html", {"error" : "This link is either expiried or invalid"})
