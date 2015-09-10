@@ -144,6 +144,7 @@ def draw(request):
     return render(request, "dashboard/draw.html",
             {"years" : years, "weeks" : weeks})
 
+@login_required
 def draw_gen(request):
     candidates = Solution.objects.filter(year=request.POST['year'], accepted=True,
             week__range=(request.POST['start-week'], request.POST['end-week']))
