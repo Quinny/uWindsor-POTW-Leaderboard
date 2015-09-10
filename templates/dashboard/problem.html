@@ -11,8 +11,20 @@
     <br />
     <input class="form-control" name="nicename" value="{{problem.nicename}}" placeholder="Nicename">
     <br />
-    <textarea rows="10" cols="100" name="description">{{problem.description}}</textarea>
+    <textarea class="description" rows="10" cols="100" name="description">{{problem.description}}</textarea>
     <br />
     <button type="submit" class="btn btn-primary">Update</button>
 </form>
+
+<div class="preview">
+</div>
+
+<script>
+$(document).ready(function() {
+    $(".description").on("change keyup paste", function() {
+        $(".preview").html($(".description").val());
+    });
+});
+</script>
+
 {% endblock %}
