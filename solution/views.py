@@ -5,6 +5,7 @@ from models import Solution
 from problem.models import Problem
 import problem.views
 import errorpage
+from django.core.mail import send_mail
 
 def add(request):
     if len(request.POST['submitcode']) == 0:
@@ -35,6 +36,13 @@ def add(request):
 
     s.solution_set.create(year=request.POST['year'], week=request.POST['week'],
             source=request.FILES['source'], public = 'public' in request.POST)
+
+    send_mail('uWindsor POTW - Submission Added',
+            'A submission has been added for the problem of the week!  Go check it!',
+            'noreply@potw.quinnftw.com',
+            # maybe dont hardcore this?
+            ['perfettq@uwindsor.ca'],
+            fail_silently=False)
 
     return problem.views.problem_stats(request, request.POST['year'], request.POST['week'],
             None, "Your code has been submitted for checking" + extra)
