@@ -8,7 +8,7 @@ import errorpage
 def problem_stats(request, year, week, error=None, success=None):
     try:
         solutions = Solution.objects.filter(year=year, week=week, accepted=True)
-        problem = Problem.objects.get(year=year, week=week)
+        problem = Problem.objects.get(year=year, week=week, published=True)
         context = {
             "solutions": solutions,
             "problem":   problem,
@@ -25,14 +25,14 @@ def problem_stats(request, year, week, error=None, success=None):
 
 def show_all(request):
     context = {
-        "problems": Problem.objects.order_by("week"),
+        "problems": Problem.objects.filter(published=True).order_by("week"),
          "labels":  graph_labels(),
          "data":    graph_data()
     }
     return render(request, "problem/all.html", context)
 
 def graph_labels():
-    problems = Problem.objects.order_by("week")
+    problems = Problem.objects.filter(published=True).order_by("week")
     labels = map(lambda i : '"Week ' + str(i) + '"', range(1, problems.count() + 1))
     return "labels: [" + ",".join(labels) + "]"
 
