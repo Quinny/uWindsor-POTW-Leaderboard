@@ -44,8 +44,8 @@ def show(request, solution_id):
         s = Solution.objects.get(pk=solution_id)
     except:
         return errorpage.views.index(request)
-    recent_year = Problem.objects.latest('year').year
-    recent_week = Problem.objects.latest('week').week
+    recent_year = Problem.objects.filter(published=True).latest('year').year
+    recent_week = Problem.objects.filter(published=True).latest('week').week
     context = {
         "solution":    s,
         "most_recent": s.year == recent_year and s.week == recent_week,
@@ -54,4 +54,7 @@ def show(request, solution_id):
     return render(request, "solution/index.html", context)
 
 def all(request):
-    return render(request, "solution/all.html", {"problems" : Problem.objects.order_by("-week")})
+    context = {
+            "problems": Problem.objects.filter(published=True).order_by("-week")
+    }
+    return render(request, "solution/all.html", context)

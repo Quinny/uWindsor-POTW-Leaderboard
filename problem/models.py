@@ -6,6 +6,7 @@ class Problem(models.Model):
     week = models.IntegerField()
     description = models.TextField()
     nicename = models.CharField(max_length=200)
+    published = models.BooleanField()
 
     def __str__(self):
         return str(self.year) + " Week " + str(self.week) + " - " + self.nicename

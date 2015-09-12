@@ -13,6 +13,12 @@
     <br />
     <textarea class="description" rows="10" cols="100" name="description">{{problem.description}}</textarea>
     <br />
+    <input type="checkbox" name="publish"
+    {% if problem.published %}
+        checked
+    {% endif %}
+    > Publish Problem
+    <br />
     <button type="submit" class="btn btn-primary">Update</button>
 </form>
 <hr />

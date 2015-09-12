@@ -12,7 +12,7 @@ import datetime
 import re
 
 def index(request):
-    problem = Problem.objects.order_by("-week")[0]
+    problem = Problem.objects.filter(published=True).order_by("-week")[0]
     context = {
         "problem": problem,
     }

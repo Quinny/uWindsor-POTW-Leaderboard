@@ -61,7 +61,8 @@ def add_problem(request):
         p = Problem.objects.create(year=request.POST['year'],
                                    week=request.POST['week'],
                                    description=request.POST['description'],
-                                   nicename=request.POST['nicename'])
+                                   nicename=request.POST['nicename'],
+                                   published='publish' in request.POST)
         p.save()
     return redirect("/dashboard/")
 
@@ -78,6 +79,7 @@ def update_problem(request):
         to_update.year = request.POST['year']
         to_update.description = request.POST['description']
         to_update.nicename = request.POST['nicename']
+        to_update.published = 'publish' in request.POST
         to_update.save()
     return redirect("/problem/" + request.POST['year'] + "/" + request.POST['week'])
 

@@ -37,7 +37,7 @@ def graph_labels():
     return "labels: [" + ",".join(labels) + "]"
 
 def graph_data():
-    n = Problem.objects.all().count()
+    n = Problem.objects.filter(published=True).count()
     sols = []
     for i in range(1, n + 1):
         sols.append(Solution.objects.filter(year=date.today().year, week=i, accepted=True).count())
