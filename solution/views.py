@@ -8,9 +8,6 @@ import errorpage
 from django.core.mail import send_mail
 
 def add(request):
-    if len(request.POST['submitcode']) == 0:
-        return problem.views.problem_stats(request, request.POST['year'], request.POST['week'],
-                "Please specify your submission code")
     if "source" not in request.FILES:
          return problem.views.problem_stats(request, request.POST['year'], request.POST['week'],
                 "Please attach your source code")

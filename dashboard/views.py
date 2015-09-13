@@ -10,8 +10,7 @@ import random
 def index(request, error = None, success = None):
     if request.user.is_authenticated():
         context = {
-            "pending_submissions":
-                Solution.objects.filter(accepted=False).count(),
+            "pending_submissions": Solution.objects.filter(accepted=False).count(),
              "error":              error,
              "success":            success
         }
