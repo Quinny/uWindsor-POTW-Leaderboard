@@ -15,7 +15,7 @@
     </code>
 </pre>
 
-<form method="POST" action="/dashboard/submission/accept/">
+<form class="accept-form" method="POST" action="/dashboard/submission/accept/">
     {% csrf_token %}
     <input type="hidden" name="pk" value="{{submission.pk}}">
     <button type="submit" class="btn btn-primary">
@@ -31,21 +31,29 @@
     </button>
     <br />
     <br />
-    <textarea name="reason" placeholder="Reason for declining" rows="10" cols="50"></textarea>
+    <textarea class="reason" name="reason" placeholder="Reason for declining" rows="10" cols="50"></textarea>
 </form>
 
 <script>
+$(".accept-form").on("submit", function() {
+    if ($(".reason").val().length > 0) {
+        alert("Please erase the reason to decline before you accept");
+        return false;
+    }
+    return true;
+});
+
 function SelectText(element) {
     var doc = document
         , text = doc.getElementById(element)
         , range, selection
-    ;    
+    ;
     if (doc.body.createTextRange) {
         range = document.body.createTextRange();
         range.moveToElementText(text);
         range.select();
     } else if (window.getSelection) {
-        selection = window.getSelection();        
+        selection = window.getSelection();
         range = document.createRange();
         range.selectNodeContents(text);
         selection.removeAllRanges();
