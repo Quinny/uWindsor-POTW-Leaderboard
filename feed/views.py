@@ -4,7 +4,7 @@ import HTMLParser
 
 class LatestProblem(Feed):
     title = "Latest Problem Of The Week"
-    link = "/feed"
+    link = "/feed.xml"
 
     def items(self):
         latest = Problem.objects.filter(published=True).order_by("-week")[0]
