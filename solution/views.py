@@ -34,7 +34,7 @@ def add(request):
     s.solution_set.create(year=request.POST['year'], week=request.POST['week'],
             source=request.FILES['source'], public = 'public' in request.POST)
 
-    send_mail('uWindsor POTW - Submission Added',
+    send_mail('uWindsor POTW - ' + str(s) + ' Submission Added',
             'A submission has been added for the problem of the week!  Go check it!',
             'noreply@potw.quinnftw.com',
             # maybe dont hardcore this?
