@@ -1,0 +1,95 @@
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important; }
+
+a {
+  color: #00B7FF; }
+
+ul.trophies li {
+  display: inline; }
+
+img.trophy {
+  padding-right: 2px;
+  width: 10%;
+  height: 5%; }
+
+img.y_u_no {
+  width: 100%; }
+
+.center {
+  width: 50%;
+  margin: 0 auto; }
+
+div#main-content {
+  padding-top: 10px; }
+
+table {
+  border-collapse: collapse; }
+
+td {
+  padding-top: 10px;
+  padding-bottom: 4px;
+  font-size: 1.3em;
+  color: #000000;
+  border-bottom: 2px solid #404040; }
+
+td.solved {
+  text-align: right; }
+
+td.challenger {
+  color: #00C080;
+  text-align: left; }
+
+.header, th.challenger_header, th.rank_header {
+  color: #000000;
+  font-size: 1.7em; }
+
+th.challenger_header {
+  text-align: left; }
+
+th.rank_header {
+  text-align: right; }
+
+.error_msg {
+  font-size: 2em; }
+
+.btn, button {
+  margin: 4px 16px 4px 0;
+  padding: 2px 18px;
+  background-color: #516AE8;
+  border: none;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24);
+  color: #fff !important;
+  text-transform: uppercase;
+  font-weight: 700;
+  cursor: default;
+  transition: all 0.25s ease;
+  height: 32px;
+  font-size: 12px; }
+
+.btn:hover, button:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.34);
+  background-color: #5A72EE; }
+
+.btn:active, button:active {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.16);
+  background-color: #4059DB; }
+
+.btn:focus, button:focus {
+  outline: none; }
+
+.pull-right {
+  float: right; }
+.fade {
+  opacity: 0;
+  -webkit-transition: opacity 1.25s ease-in;
+  -moz-transition: opacity 1.25s ease-in;
+  -o-transition: opacity 1.25s ease-in;
+  -ms-transition: opacity 1.25s ease-in;
+  transition: opacity 1.25s ease-in;
+}
+
+.fade.in {
+  opacity: 1;
+}
+
