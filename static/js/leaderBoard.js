@@ -2,14 +2,11 @@
   angular.module('LeaderBoardApp.factories', []);
   angular.module('LeaderBoardApp.services', []);
   angular.module('LeaderBoardApp.controllers', []);
-  angular.module('LeaderBoardApp.directives', []);
-
 
   var app = angular.module('LeaderBoardApp', [
       'ngRoute',
       'LeaderBoardApp.factories',
       'LeaderBoardApp.services',
-      'LeaderBoardApp.directives',
       'LeaderBoardApp.controllers'
   ]);
 
@@ -21,12 +18,12 @@
       .when('/error', {
         templateUrl: 'errorTmpl'
       })
-      .otherwise('/');
+      .otherwise('/error');
   }]);
 
   app.controller('MainCtrl', ['$scope', MainCtrl]);
 
-  function MainCtrl($scope) { }
+  function MainCtrl($scope) {}
 
 })(window.angular);
 ;(function(app) {
@@ -59,31 +56,21 @@
       return 0;
     }
 
-    function UserCollection(rank) {
-      var self = this;
-      self.rank = rank;
-      self.collection = [];
-    }
-
     return {
       build: function(data) {
-        return data.map(function(d) {
-          return User.build(d.student_id, d.solved);
-        }).sort(sortAscending);
+        return data.map(function(d) { return User.build(d.student_id, d.solved); }).sort(sortAscending);
       }
     };
   }]);
 
 })(window.angular.module('LeaderBoardApp.factories'));
 ;(function(app) {
-  var host = '';//"http://potw.quinnftw.com";
+  var host = '';
   var path = "/api/solvers";
 
   app.factory('LeaderBoardService', ['$http', '$q', LeaderBoardService]);
 
   function LeaderBoardService($http, $q) {
-    self = this;
-
     return {
       getLeaders: function() {
         var deferred = $q.defer();
@@ -94,25 +81,6 @@
     }
   }
 })(window.angular.module('LeaderBoardApp.services'));
-;(function(app) {
-
-  app.directive('deferCss', ['$parse', '$timeout', directive]);
-
-  function directive($parse, $timeout) {
-    return {
-      link: function(scope, elem, attrs) {
-        var css = $parse(attrs['deferCss'])(scope);
-        var time = $parse(attrs['deferCssTime'])(scope) || 1000;
-        if (typeof css === 'string' && css.length > 0) {
-          $timeout(function() {
-            elem.addClass(css);
-          }, time);
-        }
-      }
-    }
-  }
-
-})(window.angular.module('LeaderBoardApp.directives'));
 ;(function(app) {
   app.controller('ErrorController', ['$scope', '$location', ErrorController]);
 
@@ -133,6 +101,7 @@
   app.controller('LeaderBoardController', ['$scope', '$location', 'LeaderBoardService', 'UsersFactory', LeaderBoardController]);
 
   function LeaderBoardController($scope, $location, LBSvc, Users) {
+    $scope.page = { loading: true };
     load();
 
     function load() {
@@ -142,10 +111,10 @@
     function getData() {
       LBSvc.getLeaders()
         .then(function success(s) {
-          console.log(s);
+          $scope.page.loading = false;
           $scope.users = Users.build(s.data.data);
         }, function error(err) {
-          console.log(err);
+          $scope.page.loading = false;
           $location.path('/error');
         });
     }

@@ -9,19 +9,26 @@
     <div>
       <script type="text/ng-template" id="leaderBoardTmpl">
         <div ng-controller="LeaderBoardController">
-          <div ng-if="users.length == 0">
-            <div class="error_msg">No solvers yet. Be the
-              <a href="/">first</a>
-            </div>
+          <div ng-show="page.loading" class="fader load-center">
+            <img src="/static/img/mini_balls.gif" align="middle" class="loading">
           </div>
-          <div ng-if="users.length != 0">
-            <table defer-css="'in'" class="fade center">
-              <tr ng-repeat="user in users track by $index">
-                <td> {{ $index + 1 }} </td>
-                <td defer-css="'in'" defer-css-time="{{ $index * 10 + 100 }}" class="fade challenger"><a href="/student/{{ user.name }}">{{user.name}}</a></td>
-                <td defer-css="'in'" defer-css-time="{{ $index * 10 + 100 }}" class="fade solved">{{ user.solved }}</td>
-              </tr>
-            </table>
+          <div ng-hide="page.loading" class="fader">
+            <div>
+              <div ng-if="users.length == 0">
+                <div class="error_msg">No solvers yet. Be the
+                  <a href="/">first</a>
+                </div>
+              </div>
+              <div ng-if="users.length != 0">
+                <table class="center">
+                  <tr ng-repeat="user in users track by $index">
+                    <td> {{ $index + 1 }} </td>
+                    <td class="challenger"><a href="/student/{{ user.name }}">{{user.name}}</a></td>
+                    <td class="solved">{{ user.solved }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </script>
@@ -33,7 +40,7 @@
         </div>
       </script>
     </div>
-    <div id="template_view" ng-view defer-css="'in'" class="fade">
+    <div id="template_view" ng-view class="fader">
     </div>
   </div>
 </div>
