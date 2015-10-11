@@ -3,7 +3,6 @@
 {% block content %}
 <h1>Leader Board</h1>
 <hr />
-<br />
 {% verbatim %}
 <div ng-app="LeaderBoardApp" ng-controller="MainCtrl" class="ng-cloak">
   <div id="main-content">
@@ -18,8 +17,9 @@
           <div ng-if="users.length != 0">
             <table defer-css="'in'" class="fade center">
               <tr ng-repeat="user in users track by $index">
-                <td defer-css="'in'" defer-css-time="{{ $index * 150 + 1000 }}" class="fade challenger">{{ user.name }}</td>
-                <td defer-css="'in'" defer-css-time="{{ $index * 150 + 1000 }}" class="fade solved">{{ user.solved }}</td>
+                <td> {{ $index + 1 }} </td>
+                <td defer-css="'in'" defer-css-time="{{ $index * 10 + 100 }}" class="fade challenger"><a href="/student/{{ user.name }}">{{user.name}}</a></td>
+                <td defer-css="'in'" defer-css-time="{{ $index * 10 + 100 }}" class="fade solved">{{ user.solved }}</td>
               </tr>
             </table>
           </div>

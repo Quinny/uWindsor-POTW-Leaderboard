@@ -16,7 +16,7 @@ img.y_u_no {
   width: 100%; }
 
 .center {
-  width: 50%;
+  width: 80%;
   margin: 0 auto; }
 
 div#main-content {
@@ -28,16 +28,17 @@ table {
 td {
   padding-top: 10px;
   padding-bottom: 4px;
-  font-size: 1.3em;
   color: #000000;
-  border-bottom: 2px solid #404040; }
+  border-bottom: 1px solid #999; }
 
 td.solved {
   text-align: right; }
 
 td.challenger {
   color: #00C080;
-  text-align: left; }
+  text-align: left;
+  font-size: 1.3em;
+}
 
 .header, th.challenger_header, th.rank_header {
   color: #000000;
