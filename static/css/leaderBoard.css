@@ -4,17 +4,6 @@
 a {
   color: #00B7FF; }
 
-ul.trophies li {
-  display: inline; }
-
-img.trophy {
-  padding-right: 2px;
-  width: 10%;
-  height: 5%; }
-
-img.y_u_no {
-  width: 100%; }
-
 .center {
   width: 80%;
   margin: 0 auto; }
@@ -81,16 +70,28 @@ th.rank_header {
 
 .pull-right {
   float: right; }
-.fade {
-  opacity: 0;
-  -webkit-transition: opacity 1.25s ease-in;
-  -moz-transition: opacity 1.25s ease-in;
-  -o-transition: opacity 1.25s ease-in;
-  -ms-transition: opacity 1.25s ease-in;
-  transition: opacity 1.25s ease-in;
-}
 
-.fade.in {
+.fader {
+  transition: 2.5s linear all;
   opacity: 1;
 }
 
+.fader.ng-hide {
+  opacity: 0;
+  transition: 1.5s linear all;
+  display: block !important;
+}
+
+.loading {
+  position: fixed;
+  z-index: -1;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.load-center {
+  width: 100%;
+  margin-left: 45%;
+  text-align: center;
+}
