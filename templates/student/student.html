@@ -25,6 +25,26 @@
     {% endfor %}
 </table>
 
+<hr />
+
+{% if student.contribution_set.count > 0 %}
+
+<h2>Contributions</h2>
+
+{% for c in student.contribution_set.all %}
+    <a href={{ c.commit_url }}>
+        Commit diff
+    </a>
+    / <a href={{ c.affected_page}}>
+        Affected Page
+    </a>
+    <br />
+    {{ c.description | safe }}
+    <hr />
+{% endfor %}
+
+{% endif %}
+
 <style>
 .glyphicon {
     font-size:0.5em;

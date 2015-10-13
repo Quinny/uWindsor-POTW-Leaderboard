@@ -37,6 +37,8 @@ INSTALLED_APPS = (
     'solution',
     'problem',
     'errorpage',
+    'leaderboard',
+    'contribution',
 )
 
 MIDDLEWARE_CLASSES = (

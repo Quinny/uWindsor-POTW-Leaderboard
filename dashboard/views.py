@@ -50,6 +50,16 @@ def add_solution(request):
     return redirect(request.META.get('HTTP_REFERER'))
 
 @login_required
+def add_contribution(request):
+    if request.method == "POST":
+        s = Student.objects.get(pk=request.POST['pk'])
+        s.contribution_set.create(description=request.POST['description'],
+                commit_url=request.POST['commit-url'],
+                affected_page=request.POST['affected-page'])
+        s.save()
+    return redirect(request.META.get('HTTP_REFERER'))
+
+@login_required
 def edit_student(request, pk):
     s = Student.objects.get(pk=pk)
     return render(request, "dashboard/student.html", {"student" : s})
