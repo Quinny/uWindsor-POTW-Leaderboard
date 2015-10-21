@@ -7,6 +7,7 @@ class Problem(models.Model):
     description = models.TextField()
     nicename = models.CharField(max_length=200)
     published = models.BooleanField()
+    presentation_url = models.TextField()
 
     def __str__(self):
         return str(self.year) + " Week " + str(self.week) + " - " + self.nicename

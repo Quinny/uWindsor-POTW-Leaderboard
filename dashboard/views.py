@@ -88,6 +88,7 @@ def update_problem(request):
         to_update.year = request.POST['year']
         to_update.description = request.POST['description']
         to_update.nicename = request.POST['nicename']
+        to_update.presentation_url = request.POST['pres']
         to_update.published = 'publish' in request.POST
         to_update.save()
     return redirect("/problem/" + request.POST['year'] + "/" + request.POST['week'])

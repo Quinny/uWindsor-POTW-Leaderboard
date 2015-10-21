@@ -3,8 +3,15 @@
 {% block content %}
 
 {% for p in problems %}
-    <h1><a href="/problem/{{p.year}}/{{p.week}}">{{ p }}</a></h1>
-    <hr />
+<h1>
+    <a href="/problem/{{p.year}}/{{p.week}}">
+        {{ p }}
+    </a>
+</h1>
+    {% if p.presentation_url %}
+        <a href="{{ p.presentation_url }}">Solution Presentation</a>
+    {% endif %}
+<hr />
     <table class="table table-striped table-bordered">
         {% for s in p.solutions %}
             <tr>
