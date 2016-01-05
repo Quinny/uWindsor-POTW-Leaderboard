@@ -40,5 +40,5 @@ def graph_data():
     n = Problem.objects.filter(published=True).count()
     sols = []
     for i in range(1, n + 1):
-        sols.append(Solution.objects.filter(year=date.today().year, week=i, accepted=True).count())
+        sols.append(Solution.objects.filter(week=i, accepted=True).count())
     return "data : [" + ",".join(map(str, sols)) + "]"
