@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from student.models import Student
 from problem.models import Problem
 from solution.models import Solution
-from django.core.mail import send_mail
+from django.core.mail import send_mail, send_mass_mail
 import random
 
 def index(request, error = None, success = None):
@@ -80,6 +80,15 @@ def edit_problem(request, pk):
     p = Problem.objects.get(pk=pk)
     return render(request, "dashboard/problem.html",{ "problem" : p})
 
+def email_notify(week, nicename):
+    subject = 'uWindsor POTW Week ' + str(week) + ' Posted',
+    message = "Problem of the week " + str(week) + " - " + nicename + ", has been posted at http://potw.quinnftw.com. " +\
+            "Good luck!\n\nhttp://potw.quinnftw.com/unsubscribe/{}"
+    from_email = "noreply@potw.quinnftw.com"
+
+    message_datas = [(subject, message.format(str(s)), from_email, [str(s) + "@uwindsor.ca"]) for s in Student.objects.filter(subscribed=True)]
+    send_mass_mail(tuple(message_datas), fail_silently=False)
+
 @login_required
 def update_problem(request):
     if request.method == "POST":
@@ -90,6 +99,10 @@ def update_problem(request):
         to_update.nicename = request.POST['nicename']
         to_update.presentation_url = request.POST['pres']
         to_update.published = 'publish' in request.POST
+
+        if 'notify' in request.POST:
+            email_notify(to_update.week, to_update.nicename)
+
         to_update.save()
     return redirect("/problem/" + request.POST['year'] + "/" + request.POST['week'])
 

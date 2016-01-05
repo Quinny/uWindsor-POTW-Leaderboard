@@ -11,5 +11,6 @@ urlpatterns = patterns('',
     url(r'^leaderboard/?$', include ('leaderboard.urls')),
     url(r'^api/?',         include('api.urls')),
     url(r'^feed/?',        include('feed.urls')),
+    url(r'^unsubscribe/(.*)/?$', student.views.unsubscribe),
     url(r'^.*$',           include('errorpage.urls')),
 )

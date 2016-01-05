@@ -38,12 +38,23 @@ def profile(request, uid):
     }
     return render(request, "student/student.html", context)
 
+def unsubscribe(request, student_id):
+    try:
+        s = Student.objects.get(student_id=student_id)
+    except:
+        return errorpage.views.index(request)
+
+    s.subscribed = False
+    s.save()
+    return sign_up(request, None, "Successfully unsubscribed!")
+
 def sign_up(request, error=None, success=None):
     context = {
         "error":   error,
         "success": success,
     }
     return render(request, "student/signup.html", context)
+
 
 def send_verify(request):
     if 'uwinid' not in request.POST or len(request.POST['uwinid']) == 0:

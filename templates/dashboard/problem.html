@@ -1,7 +1,7 @@
 {% extends "dashboard/main.html" %}
 
 {% block content %}
-<form method="POST" action="/dashboard/updateproblem/">
+<form class="problem-form" method="POST" action="/dashboard/updateproblem/">
     {% csrf_token %}
     <input type="hidden" name="pk" value="{{problem.pk}}">
     <br />
@@ -26,12 +26,20 @@
         checked
     {% endif %}
     > Publish Problem
+    <input type="checkbox" name="notify" class="notify-box"> Email Notify
     <br />
     <button type="submit" class="btn btn-primary">Update</button>
 </form>
 <hr />
 
 <script>
+$(".problem-form").on("submit", function() {
+    if ($(".notify-box").prop('checked')) {
+        return confirm("Are you sure you wish to notify everyone?");
+    }
+    return true;
+});
+
 $(document).ready(function() {
     $(".description").on("change keyup paste", function() {
         $(".preview").html($(".description").val());
