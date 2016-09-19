@@ -15,7 +15,7 @@ class Solution(models.Model):
         return str(self.year) + " Week " + str(self.week)
 
     def programming_language(self):
-        _, ext = path.splittext(self.source.name)
+        _, ext = path.splitext(self.source.name)
         languages = {   '.py' : 'Python',
                         '.c' : 'C',
                         '.cpp' : 'C++',
