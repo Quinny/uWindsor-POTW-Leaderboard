@@ -10,18 +10,7 @@ class Solution(models.Model):
     public  = models.BooleanField(default=False)
     # Default set just to make django happy
     source  = models.FileField(upload_to = "source/%Y/%m/%d", default='settings.MEDIA_ROOT/helloworld.c')
-
-    def __str__(self):
-        return str(self.year) + " Week " + str(self.week)
-
-    def programming_language(self):
-        _, ext = path.splitext(self.source.name)
-
-        if ext in languages:
-            return languages[ext]
-        else:
-            return "Unknown"
-    programming_languages.languages = {     '.py' : 'Python',
+    languages = {     '.py' : 'Python',
                                             '.c' : 'C',
                                             '.cpp' : 'C++',
                                             '.cxx' : 'C++',
@@ -36,6 +25,15 @@ class Solution(models.Model):
                                             '.lol' : 'LOLCODE'
                                             '.lols' : 'LOLCODE'
     }
+    
+    def __str__(self):
+        return str(self.year) + " Week " + str(self.week)
+
+    def programming_language(self):
+        _, ext = path.splitext(self.source.name)
+
+        return languages.get(ext, "Unkown");
+        
 
 # Receive the pre_delete signal and delete the file associated with the model instance.
 from django.db.models.signals import pre_delete
