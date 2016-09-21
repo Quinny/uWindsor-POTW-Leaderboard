@@ -14,8 +14,8 @@ languages = {
     '.asm' : 'Assembly',
     '.rb' : 'Ruby',
     '.hs' : 'Haskell',
-    '.lhs' : 'Haskell'
-    '.lol' : 'LOLCODE'
+    '.lhs' : 'Haskell',
+    '.lol' : 'LOLCODE',
     '.lols' : 'LOLCODE'
 }
 
