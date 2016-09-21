@@ -13,7 +13,7 @@
     {% endif %}
 <hr />
     <table class="table table-striped table-bordered">
-        {% for s in p.solutions %}
+        {% for s in p.solutions|dictsort:"programming_language" %}
             <tr>
                 <td>
                     <a href="/solution/{{s.pk}}">{{ s.student }}</a>

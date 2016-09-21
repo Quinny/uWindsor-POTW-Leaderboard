@@ -10,7 +10,8 @@ def cors_json(resp):
 
 def solvers(request):
     ret = []
-    students = Student.objects.all()
+    # TODO - change this when someone else runs the show.
+    students = Student.objects.exclude(student_id="perfettq")
 
     for s in students:
         ret.append({'student_id': s.student_id, 'solved': s.solution_count})
