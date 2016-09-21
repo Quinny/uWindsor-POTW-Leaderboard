@@ -10,30 +10,30 @@ class Solution(models.Model):
     public  = models.BooleanField(default=False)
     # Default set just to make django happy
     source  = models.FileField(upload_to = "source/%Y/%m/%d", default='settings.MEDIA_ROOT/helloworld.c')
-
+    languages = {     '.py' : 'Python',
+                                            '.c' : 'C',
+                                            '.cpp' : 'C++',
+                                            '.cxx' : 'C++',
+                                            '.cc' : 'C++',
+                                            '.rs' : 'Rust',
+                                            '.js' : 'JavaScript',
+                                            '.java' : 'Java',
+                                            '.asm' : 'Assembly',
+                                            '.rb' : 'Ruby',
+                                            '.hs' : 'Haskell',
+                                            '.lhs' : 'Haskell'
+                                            '.lol' : 'LOLCODE'
+                                            '.lols' : 'LOLCODE'
+    }
+    
     def __str__(self):
         return str(self.year) + " Week " + str(self.week)
 
     def programming_language(self):
         _, ext = path.splitext(self.source.name)
-        languages = {   '.py' : 'Python',
-                        '.c' : 'C',
-                        '.cpp' : 'C++',
-                        '.cxx' : 'C++',
-                        '.cc' : 'C++',
-                        '.rs' : 'Rust',
-                        '.js' : 'JavaScript',
-                        '.java' : 'Java',
-                        '.asm' : 'Assembly',
-                        '.rb' : 'Ruby',
-                        '.hs' : 'Haskell',
-                        '.lhs' : 'Haskell'
-        }
 
-        if ext in languages:
-            return languages[ext]
-        else:
-            return "Unknown"
+        return languages.get(ext, "Unkown");
+        
 
 # Receive the pre_delete signal and delete the file associated with the model instance.
 from django.db.models.signals import pre_delete
