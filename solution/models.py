@@ -16,24 +16,26 @@ class Solution(models.Model):
 
     def programming_language(self):
         _, ext = path.splitext(self.source.name)
-        languages = {   '.py' : 'Python',
-                        '.c' : 'C',
-                        '.cpp' : 'C++',
-                        '.cxx' : 'C++',
-                        '.cc' : 'C++',
-                        '.rs' : 'Rust',
-                        '.js' : 'JavaScript',
-                        '.java' : 'Java',
-                        '.asm' : 'Assembly',
-                        '.rb' : 'Ruby',
-                        '.hs' : 'Haskell',
-                        '.lhs' : 'Haskell'
-        }
 
         if ext in languages:
             return languages[ext]
         else:
             return "Unknown"
+    programming_languages.languages = {     '.py' : 'Python',
+                                            '.c' : 'C',
+                                            '.cpp' : 'C++',
+                                            '.cxx' : 'C++',
+                                            '.cc' : 'C++',
+                                            '.rs' : 'Rust',
+                                            '.js' : 'JavaScript',
+                                            '.java' : 'Java',
+                                            '.asm' : 'Assembly',
+                                            '.rb' : 'Ruby',
+                                            '.hs' : 'Haskell',
+                                            '.lhs' : 'Haskell'
+                                            '.lol' : 'LOLCODE'
+                                            '.lols' : 'LOLCODE'
+    }
 
 # Receive the pre_delete signal and delete the file associated with the model instance.
 from django.db.models.signals import pre_delete
