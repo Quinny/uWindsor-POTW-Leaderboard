@@ -9,11 +9,20 @@ def cors_json(resp):
     return r
 
 def solvers(request):
-    ret = []
     # TODO - change this when someone else runs the show.
     students = Student.objects.exclude(student_id="perfettq")
 
-    for s in students:
-        ret.append({'student_id': s.student_id, 'solved': s.solution_count})
-    return cors_json({'data' : ret})
-    #return JsonResponse({'data': ret})
+    def latest_or_zero(student):
+        try:
+            return student.solution_set.latest("id").id
+        except:
+            return 0
+
+    def clean(student):
+        return {
+            "student_id": student.student_id,
+            "solved"    : student.solution_count,
+            "latest_solution_id": latest_or_zero(student)
+        }
+
+    return cors_json({'data' : map(clean, students)})

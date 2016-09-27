@@ -58,7 +58,9 @@
 
     return {
       build: function(data) {
-        return data.map(function(d) { return User.build(d.student_id, d.solved); }).sort(sortAscending);
+        return data.map(function(d) {
+          return User.build(d.student_id, d.solved);
+        }).sort(sortAscending);
       }
     };
   }]);
