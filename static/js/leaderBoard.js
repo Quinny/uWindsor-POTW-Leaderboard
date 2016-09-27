@@ -47,13 +47,10 @@
   app.factory('UsersFactory', ['UserFactory', function(User) {
 
     function sortAscending(a, b) {
-      if (a.solved > b.solved) {
-        return -1;
+      if (a.solved != b.solved) {
+        return a.solved - b.solved;
       }
-      if (a.solved < b.solved) {
-        return 1;
-      }
-      return 0;
+      return a.latest_solution_id - b.latest_solution_id
     }
 
     return {
