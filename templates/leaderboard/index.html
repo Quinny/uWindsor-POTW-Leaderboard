@@ -22,7 +22,12 @@
               <div ng-if="users.length != 0">
                 <table class="center">
                   <tr ng-repeat="user in users track by $index">
-                    <td> {{ $index + 1 }} </td>
+                    <td> {{ $index + 1 }}
+                    <span ng-if="$index == 0">
+                      <img src="/static/img/totfc.png"
+                        width="30" alt="Top of the food chain">
+                    </span>
+                    </td>
                     <td class="challenger"><a href="/student/{{ user.name }}">{{user.name}}</a></td>
                     <td class="solved">{{ user.solved }}</td>
                   </tr>
