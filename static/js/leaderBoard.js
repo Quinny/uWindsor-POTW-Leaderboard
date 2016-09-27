@@ -28,15 +28,16 @@
 })(window.angular);
 ;(function(app) {
 
-  function User(id, numSolved) {
+  function User(id, numSolved, latestSol) {
     this.name = id;
     this.solved = numSolved;
+    this.latestSolution = latestSol;
   }
 
   app.factory('UserFactory', function() {
     return {
-      build: function(id, numSolved) {
-        return new User(id, numSolved);
+      build: function(id, numSolved, latestSolution) {
+        return new User(id, numSolved, latestSolution);
       }
     }
   });
@@ -50,13 +51,13 @@
       if (a.solved != b.solved) {
         return b.solved - a.solved;
       }
-      return a.latest_solution_id - b.latest_solution_id
+      return a.latestSolution - b.latestSolution;
     }
 
     return {
       build: function(data) {
         return data.map(function(d) {
-          return User.build(d.student_id, d.solved);
+          return User.build(d.student_id, d.solved, d.latest_solution_id);
         }).sort(sortAscending);
       }
     };
