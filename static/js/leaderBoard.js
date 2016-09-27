@@ -48,7 +48,7 @@
 
     function sortAscending(a, b) {
       if (a.solved != b.solved) {
-        return a.solved - b.solved;
+        return b.solved - a.solved;
       }
       return a.latest_solution_id - b.latest_solution_id
     }
