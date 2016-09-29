@@ -19,12 +19,15 @@
 
 <h2>Solved by</h2>
 <table class="table table-striped table-bordered">
-    {% for sol in solutions %}
+    {% for sol in solutions|dictsort:"programming_language"%}
         <tr>
             <td>
                 <a href="/solution/{{sol.pk}}/">
                     {{sol.student}}
                 </a>
+            </td>
+            <td>
+              {{ sol.programming_language }}
             </td>
         </tr>
     {% endfor %}
