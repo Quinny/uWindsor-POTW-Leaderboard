@@ -16,7 +16,10 @@ languages = {
     '.hs' : 'Haskell',
     '.lhs' : 'Haskell',
     '.lol' : 'LOLCODE',
-    '.lols' : 'LOLCODE'
+    '.lols' : 'LOLCODE',
+    '.f90' : 'Fortran 90',
+    '.f95' : 'Fortran 95',
+    '.f03' : 'Fortran 2003'
 }
 
 class Solution(models.Model):
