@@ -6,6 +6,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
 from helpers import get_or_none
+from django.views.decorators.http import require_http_methods
 import errorpage
 import hashlib
 import hmac
@@ -56,6 +57,7 @@ def sign_up(request, error=None, success=None):
     return render(request, "student/signup.html", context)
 
 
+@require_http_methods(["POST"])
 def send_verify(request):
     if 'uwinid' not in request.POST or len(request.POST['uwinid']) == 0:
         return sign_up(request, "Please enter your uWindsor ID", {})

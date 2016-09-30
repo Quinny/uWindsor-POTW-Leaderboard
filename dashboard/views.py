@@ -5,6 +5,7 @@ from student.models import Student
 from problem.models import Problem
 from solution.models import Solution
 from django.core.mail import send_mail, send_mass_mail
+from django.views.decorators.http import require_http_methods
 import random
 
 def index(request, error = None, success = None):
@@ -17,15 +18,12 @@ def index(request, error = None, success = None):
         return render(request, "dashboard/admin.html", context)
     return render(request, "dashboard/index.html", {})
 
+@require_http_methods(["POST"])
 def auth_login(request):
-    if request.method == "POST":
-        try:
-            u = authenticate(username=request.POST['username'],
-                             password=request.POST['password'])
-            if u is not None:
-                login(request, u)
-        except:
-            return redirect("/dashboard/")
+    u = authenticate(username=request.POST['username'],
+                     password=request.POST['password'])
+    if u is not None:
+        login(request, u)
     return redirect("/dashboard/")
 
 @login_required
@@ -34,29 +32,29 @@ def logout_page(request):
     return redirect("/")
 
 @login_required
+@require_http_methods(["POST"])
 def add_user(request):
-    if request.method == "POST":
-        s = Student.objects.create(student_id=request.POST['student_id'])
-        s.save()
+    s = Student.objects.create(student_id=request.POST['student_id'])
+    s.save()
     return redirect("/dashboard/")
 
 @login_required
+@require_http_methods(["POST"])
 def add_solution(request):
-    if request.method == "POST":
-        s = Student.objects.get(pk=request.POST['pk'])
-        s.solution_set.create(year=request.POST['year'],
-                              week=request.POST['week'])
-        s.save()
+    s = Student.objects.get(pk=request.POST['pk'])
+    s.solution_set.create(year=request.POST['year'],
+                          week=request.POST['week'])
+    s.save()
     return redirect(request.META.get('HTTP_REFERER'))
 
 @login_required
+@require_http_methods(["POST"])
 def add_contribution(request):
-    if request.method == "POST":
-        s = Student.objects.get(pk=request.POST['pk'])
-        s.contribution_set.create(description=request.POST['description'],
-                commit_url=request.POST['commit-url'],
-                affected_page=request.POST['affected-page'])
-        s.save()
+    s = Student.objects.get(pk=request.POST['pk'])
+    s.contribution_set.create(description=request.POST['description'],
+            commit_url=request.POST['commit-url'],
+            affected_page=request.POST['affected-page'])
+    s.save()
     return redirect(request.META.get('HTTP_REFERER'))
 
 @login_required
@@ -65,14 +63,14 @@ def edit_student(request, pk):
     return render(request, "dashboard/student.html", {"student" : s})
 
 @login_required
+@require_http_methods(["POST"])
 def add_problem(request):
-    if request.method == "POST":
-        p = Problem.objects.create(year=request.POST['year'],
-                                   week=request.POST['week'],
-                                   description=request.POST['description'],
-                                   nicename=request.POST['nicename'],
-                                   published='publish' in request.POST)
-        p.save()
+    p = Problem.objects.create(year=request.POST['year'],
+                               week=request.POST['week'],
+                               description=request.POST['description'],
+                               nicename=request.POST['nicename'],
+                               published='publish' in request.POST)
+    p.save()
     return redirect("/dashboard/")
 
 @login_required
@@ -86,24 +84,26 @@ def email_notify(week, nicename):
             "Good luck!\n\nhttp://potw.quinnftw.com/unsubscribe/{}"
     from_email = "noreply@potw.quinnftw.com"
 
-    message_datas = [(subject, message.format(str(s)), from_email, [str(s) + "@uwindsor.ca"]) for s in Student.objects.filter(subscribed=True)]
+    message_datas = [(subject, message.format(str(s)), from_email,
+        [str(s) + "@uwindsor.ca"])\
+            for s in Student.objects.filter(subscribed=True)]
     send_mass_mail(tuple(message_datas), fail_silently=False)
 
 @login_required
+@require_http_methods(["POST"])
 def update_problem(request):
-    if request.method == "POST":
-        to_update = Problem.objects.get(pk=request.POST['pk'])
-        to_update.week = request.POST['week']
-        to_update.year = request.POST['year']
-        to_update.description = request.POST['description']
-        to_update.nicename = request.POST['nicename']
-        to_update.presentation_url = request.POST['pres']
-        to_update.published = 'publish' in request.POST
+    to_update = Problem.objects.get(pk=request.POST['pk'])
+    to_update.week = request.POST['week']
+    to_update.year = request.POST['year']
+    to_update.description = request.POST['description']
+    to_update.nicename = request.POST['nicename']
+    to_update.presentation_url = request.POST['pres']
+    to_update.published = 'publish' in request.POST
 
-        if 'notify' in request.POST:
-            email_notify(to_update.week, to_update.nicename)
+    if 'notify' in request.POST:
+        email_notify(to_update.week, to_update.nicename)
 
-        to_update.save()
+    to_update.save()
     return redirect("/problem/" + request.POST['year'] + "/" + request.POST['week'])
 
 @login_required
@@ -127,6 +127,7 @@ def mark_submission(request, solution_id):
     return render(request, "dashboard/submission.html", {"submission" : Solution.objects.get(pk = solution_id)})
 
 @login_required
+@require_http_methods(["POST"])
 def accept_sub(request):
     s = Solution.objects.get(pk=request.POST['pk'])
     s.accepted = True
@@ -139,6 +140,7 @@ def accept_sub(request):
     return redirect('/dashboard/submission/all')
 
 @login_required
+@require_http_methods(["POST"])
 def decline_sub(request):
     s = Solution.objects.get(pk=request.POST['pk'])
     s.delete()
@@ -152,6 +154,7 @@ def decline_sub(request):
     return redirect('/dashboard/submission/all')
 
 @login_required
+@require_http_methods(["POST"])
 def change_password(request):
     u = authenticate(username = request.user.username,
             password = request.POST['current-password'])
@@ -170,6 +173,7 @@ def draw(request):
             {"years" : years, "weeks" : weeks})
 
 @login_required
+@require_http_methods(["POST"])
 def draw_gen(request):
     candidates = Solution.objects.filter(year=request.POST['year'], accepted=True,
             week__range=(request.POST['start-week'], request.POST['end-week']))

@@ -4,10 +4,12 @@ from django.core.mail import send_mail
 from models import Solution
 from problem.models import Problem
 from helpers import get_or_none
+from django.views.decorators.http import require_http_methods
 import student
 import problem.views
 import errorpage
 
+@require_http_methods(["POST"])
 def add(request):
     if "source" not in request.FILES:
          return problem.views.problem_stats(request, request.POST['year'], request.POST['week'],
