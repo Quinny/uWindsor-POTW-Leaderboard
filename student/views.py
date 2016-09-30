@@ -56,7 +56,9 @@ def sign_up(request, error=None, success=None):
     }
     return render(request, "student/signup.html", context)
 
-
+'''
+Send a verification email to the user.
+'''
 @require_http_methods(["POST"])
 def send_verify(request):
     if 'uwinid' not in request.POST or len(request.POST['uwinid']) == 0:
@@ -70,6 +72,14 @@ def send_verify(request):
     if u is not None:
         return sign_up(request, "That uWindsor ID is already registered", {})
 
+    '''
+    Generate a verification hash by concatenating a special EMAIL_SECRET
+    string, the users uwindsor ID, and the current hour.  This allows for an
+    implicit "time out."  Once the hour changes, the hash will be invalided.
+    Now this does mean that if the user submits at 1:59pm and the email comes
+    at 2:00pm the code will be invalid, but thats just something we need to
+    live with, man.
+    '''
     now = datetime.datetime.now()
     verify_hash = hmac.new(settings.EMAIL_SECRET,
             request.POST['uwinid'] + str(now.hour)).hexdigest()
@@ -85,15 +95,28 @@ def send_verify(request):
 
     return sign_up(request, None, "Email Sent")
 
+'''
+Verify a user with a verification hash.
+'''
 def verify(request, uwinid, verify_hash):
     u = get_or_none(Student, student_id=uwinid)
     if u is not None:
         return redirect("/")
 
+    '''
+    Create the expected hash by concatenating the EMAIL_SECRET, uwind id,
+    and current hour.  If the hour has changed since the user was sent the email,
+    the hash will be invalided.
+    '''
     now = datetime.datetime.now()
     check = hmac.new(settings.EMAIL_SECRET,
             uwinid + str(now.hour)).hexdigest()
 
+    '''
+    hmac compare_digest is used here instead of == to defend against timing
+    attacks.  It always compares all bytes instead of bailing out on the first
+    differing one.
+    '''
     if hmac.compare_digest(str(check), str(verify_hash)):
         s_code = get_random_string(length=10)
         Student.objects.create(student_id = uwinid,

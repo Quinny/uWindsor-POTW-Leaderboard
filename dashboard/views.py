@@ -78,10 +78,15 @@ def edit_problem(request, pk):
     p = Problem.objects.get(pk=pk)
     return render(request, "dashboard/problem.html",{ "problem" : p})
 
+'''
+Email all users that are subsribed that a new problem was posted.
+'''
 def email_notify(week, nicename):
-    subject = 'uWindsor POTW Week ' + str(week) + ' Posted',
-    message = "Problem of the week " + str(week) + " - " + nicename + ", has been posted at http://potw.quinnftw.com. " +\
+    subject = 'uWindsor POTW Week ' + str(week) + ' Posted'
+    message = "Problem of the week " + str(week) +\
+            " - " + nicename + ", has been posted at http://potw.quinnftw.com. " +\
             "Good luck!\n\nhttp://potw.quinnftw.com/unsubscribe/{}"
+
     from_email = "noreply@potw.quinnftw.com"
 
     message_datas = [(subject, message.format(str(s)), from_email,
