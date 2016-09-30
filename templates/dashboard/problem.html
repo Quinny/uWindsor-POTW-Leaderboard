@@ -14,10 +14,10 @@
     <input class="form-control" name="pres" value="{{problem.presentation_url}}" placeholder="Presentation URL">
     <br />
     <div class="row">
-        <div class="col-md-6 col-xs-12">
+        <div id="description-wrapper" class="col-md-6 col-xs-12">
             <textarea style="width:50%" class="description" rows="10" cols="100" name="description">{{problem.description}}</textarea>
         </div>
-        <div class="col-md-6 col-xs-12">
+        <div id="preview-wrapper" class="col-md-6 col-xs-12">
             <div class="preview"></div>
         </div>
     </div>
@@ -30,6 +30,8 @@
     <br />
     <button type="submit" class="btn btn-primary">Update</button>
 </form>
+
+<button class="btn btn-primary" id="hide-description">Hide Description</button>
 <hr />
 
 <script>
@@ -40,8 +42,24 @@ $(".problem-form").on("submit", function() {
     return true;
 });
 
+$("#hide-description").on("click", function() {
+    if ($("#description-wrapper").css("display") == "none") {
+        $("#description-wrapper").css("display", "inline");
+        $("#preview-wrapper").removeClass("col-md-12");
+        $("#preview-wrapper").addClass("col-md-6");
+        $("#hide-description").text("Hide Description");
+    } else {
+        $("#description-wrapper").css("display", "none");
+        $("#preview-wrapper").removeClass("col-md-6");
+        $("#preview-wrapper").addClass("col-md-12");
+        $("#hide-description").text("Show Description");
+    }
+});
+
 $(document).ready(function() {
-    $(".description").on("change keyup paste", function() {
+    // Get the preview to display on page load.
+    $(".preview").html($(".description").val());
+    $(".description").on("load change keyup paste", function() {
         $(".preview").html($(".description").val());
     });
 });
