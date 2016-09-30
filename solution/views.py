@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from student.models import Student
-import student
+from django.core.mail import send_mail
 from models import Solution
 from problem.models import Problem
+from helpers import get_or_none
+import student
 import problem.views
 import errorpage
-from django.core.mail import send_mail
 
 def add(request):
     if "source" not in request.FILES:
@@ -14,22 +15,21 @@ def add(request):
 
     if "remember" in request.POST:
         request.session["submitcode"] = request.POST['submitcode']
+
     elif ("remember" not in request.POST) and ("submitcode" in request.session):
         del request.session["submitcode"]
 
-    try:
-        s = Student.objects.get(submit_code=request.POST['submitcode'])
-    except:
-         return problem.views.problem_stats(request, request.POST['year'], request.POST['week'],
-                 "Invalid submission code")
+    s = get_or_none(Student, submit_code=request.POST['submitcode'])
+    if s is None:
+        return problem.views.problem_stats(request, request.POST['year'],
+                request.POST['week'], "Invalid submission code")
 
     extra = ""
-    try:
-        sol = s.solution_set.get(year = request.POST['year'], week = request.POST['week'])
-        sol.delete()
+    previous_solution = get_or_none(Solution, student=s, year=request.POST['year'],
+            week=request.POST['week'])
+    if previous_solution is not None:
+        previous_solution.delete()
         extra = "<br />Your previous submission for this problem has been deleted"
-    except:
-        pass
 
     s.solution_set.create(year=request.POST['year'], week=request.POST['week'],
             source=request.FILES['source'], public = 'public' in request.POST)
@@ -45,10 +45,10 @@ def add(request):
             None, "Your code has been submitted for checking" + extra)
 
 def show(request, solution_id):
-    try:
-        s = Solution.objects.get(pk=solution_id)
-    except:
+    s = get_or_none(Solution, pk=solution_id)
+    if s is None:
         return errorpage.views.index(request)
+
     recent_year = Problem.objects.filter(published=True).latest('year').year
     recent_week = Problem.objects.filter(published=True).latest('week').week
     context = {

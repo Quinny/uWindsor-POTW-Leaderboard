@@ -5,6 +5,7 @@ from django.db.models import Count
 from django.conf import settings
 from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
+from helpers import get_or_none
 import errorpage
 import hashlib
 import hmac
@@ -16,6 +17,7 @@ def index(request):
     context = {
         "problem": problem,
     }
+
     if "submitcode" in request.session:
         context["submitcode"] = request.session["submitcode"]
     return render(request, "student/index.html", context)
@@ -26,22 +28,20 @@ def solvers(request):
     return render(request, "student/solvers.html", {"students" : top_users })
 
 def profile(request, uid):
-    try:
-        s = Student.objects.get(student_id=uid)
-    except:
+    student = get_or_none(Student, student_id=uid)
+    if student is None:
         return errorpage.views.index(request)
 
     context = {
-        "student":   s,
-        "email_md5": hashlib.md5(s.student_id + "@uwindsor.ca").hexdigest(),
-        "solutions": s.solution_set.order_by("week")
+        "student":   student,
+        "email_md5": hashlib.md5(student.student_id + "@uwindsor.ca").hexdigest(),
+        "solutions": student.solution_set.order_by("week")
     }
     return render(request, "student/student.html", context)
 
 def unsubscribe(request, student_id):
-    try:
-        s = Student.objects.get(student_id=student_id)
-    except:
+    s  = get_or_none(Student, student_id=student_id)
+    if s is None:
         return errorpage.views.index(request)
 
     s.subscribed = False
@@ -59,18 +59,19 @@ def sign_up(request, error=None, success=None):
 def send_verify(request):
     if 'uwinid' not in request.POST or len(request.POST['uwinid']) == 0:
         return sign_up(request, "Please enter your uWindsor ID", {})
+
     uwinid_check = re.compile("(\d|[a-zA-Z])+$")
     if uwinid_check.match(request.POST['uwinid']) == None:
         return sign_up(request, "That uWindsor ID is invalid", {})
-    try:
-        u = Student.objects.get(student_id=request.POST['uwinid'])
-        if u is not None:
-            return sign_up(request, "That uWindsor ID is already registered", {})
-    except:
-        pass
+
+    u = get_or_none(Student, student_id=request.POST['uwinid'])
+    if u is not None:
+        return sign_up(request, "That uWindsor ID is already registered", {})
+
     now = datetime.datetime.now()
     verify_hash = hmac.new(settings.EMAIL_SECRET,
             request.POST['uwinid'] + str(now.hour)).hexdigest()
+
     send_mail("uWindsor POTW - Confirm ID",
             "Click the following link to confirm your uWindsor ID and begin"+\
             " submitting your problem of the week solutions.\n"+\
@@ -79,19 +80,18 @@ def send_verify(request):
             "noreply@potw.quinnftw.com",
             [request.POST['uwinid'] + "@uwindsor.ca"],
             fail_silently=False)
+
     return sign_up(request, None, "Email Sent")
 
 def verify(request, uwinid, verify_hash):
-    try:
-        # Because at this point they are just spam refreshing the page
-        u = Student.objects.get(student_id=uwinid)
-        if u is not None:
-            return redirect("/")
-    except:
-        pass
+    u = get_or_none(Student, student_id=uwinid)
+    if u is not None:
+        return redirect("/")
+
     now = datetime.datetime.now()
     check = hmac.new(settings.EMAIL_SECRET,
             uwinid + str(now.hour)).hexdigest()
+
     if hmac.compare_digest(str(check), str(verify_hash)):
         s_code = get_random_string(length=10)
         Student.objects.create(student_id = uwinid,
