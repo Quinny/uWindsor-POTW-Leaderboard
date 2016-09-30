@@ -30,21 +30,5 @@ def problem_stats(request, year, week, error=None, success=None):
 def show_all(request):
     context = {
         "problems": Problem.objects.filter(published=True).order_by("week"),
-         "labels":  graph_labels(),
-         "data":    graph_data()
     }
     return render(request, "problem/all.html", context)
-
-# TODO This should realllly be exposed as an API.
-def graph_labels():
-    problems = Problem.objects.filter(published=True).order_by("week")
-    labels = map(lambda i : '"Week ' + str(i) + '"', range(1, problems.count() + 1))
-    return "labels: [" + ",".join(labels) + "]"
-
-# TODO Same.
-def graph_data():
-    n = Problem.objects.filter(published=True).count()
-    sols = []
-    for i in range(1, n + 1):
-        sols.append(Solution.objects.filter(week=i, accepted=True).count())
-    return "data : [" + ",".join(map(str, sols)) + "]"

@@ -1,5 +1,7 @@
 from django.http import JsonResponse
 from student.models import Student
+from problem.models import Problem
+from solution.models import Solution
 
 def cors_json(resp):
     r = JsonResponse(resp)
@@ -26,3 +28,15 @@ def solvers(request):
         }
 
     return cors_json({'data' : map(clean, students)})
+
+def problem_solution_count(request):
+    problems = Problem.objects.filter(published=True).order_by("week")
+
+    def clean(problem):
+        return {
+            "week": problem.week,
+            "year": problem.year,
+            "solutions": Solution.objects.filter(week=problem.week, accepted=True).count()
+        }
+
+    return cors_json({'data': map(clean, problems)})

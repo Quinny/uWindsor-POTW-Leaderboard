@@ -13,28 +13,37 @@
 
 <canvas id="solutionGraph"></canvas>
 <script>
-var ctx = $("#solutionGraph").get(0).getContext("2d");
-ctx.canvas.width  = window.innerWidth * 0.66;
-ctx.canvas.height = window.innerHeight * 0.66;
-var myNewChart = new Chart(ctx);
-var data = {
-    {{ labels | safe }},
-    datasets: [
-        {
-            fillColor: "rgba(151,187,205,0.2)",
-            strokeColor: "rgba(151,187,205,1)",
-            pointColor: "rgba(151,187,205,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(151,187,205,1)",
-            {{data | safe}}
-            }
-    ]
-};
-var myLineChart = new Chart(ctx).Line(data, {
-    scaleStartValue: 0,
-    scaleBeginAtZero: true
+
+$.get("/api/solution_count", function(data) {
+  var ctx = $("#solutionGraph").get(0).getContext("2d");
+  ctx.canvas.width  = window.innerWidth * 0.66;
+  ctx.canvas.height = window.innerHeight * 0.66;
+  var myNewChart = new Chart(ctx);
+
+  var labels = data.data.map(x => "Week " + x.week);
+  var solutions = data.data.map(x => x.solutions);
+
+  var chartData = {
+      labels: labels,
+      datasets: [
+          {
+              fillColor: "rgba(151,187,205,0.2)",
+              strokeColor: "rgba(151,187,205,1)",
+              pointColor: "rgba(151,187,205,1)",
+              pointStrokeColor: "#fff",
+              pointHighlightFill: "#fff",
+              pointHighlightStroke: "rgba(151,187,205,1)",
+              data: solutions
+              }
+      ]
+  };
+
+  var myLineChart = new Chart(ctx).Line(chartData, {
+      scaleStartValue: 0,
+      scaleBeginAtZero: true
+  });
 });
+
 </script>
 
 {% endblock %}
