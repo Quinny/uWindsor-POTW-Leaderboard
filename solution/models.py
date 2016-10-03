@@ -19,7 +19,8 @@ languages = {
     '.lols' : 'LOLCODE',
     '.f90' : 'Fortran 90',
     '.f95' : 'Fortran 95',
-    '.f03' : 'Fortran 2003'
+    '.f03' : 'Fortran 2003',
+    '.cs' : 'C#'
 }
 
 class Solution(models.Model):
@@ -37,7 +38,9 @@ class Solution(models.Model):
     def programming_language(self):
         _, ext = path.splitext(self.source.name)
 
-        return languages.get(ext, "Unkown");
+        return languages.get(ext, '<a href='
+                             '"https://github.com/Quinny/uWindsor-POTW-Leaderboard/blob/master/solution/models.py"'>
+                             'Please help</a>');
 
 
 # Receive the pre_delete signal and delete the file associated with the model instance.
