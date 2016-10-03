@@ -38,9 +38,9 @@ class Solution(models.Model):
     def programming_language(self):
         _, ext = path.splitext(self.source.name)
 
-        return languages.get(ext, '<a href=
-                             "https://github.com/Quinny/uWindsor-POTW-Leaderboard/blob/master/solution/models.py">
-                             Please help</a>');
+        return languages.get(ext, '<a href='
+                             '"https://github.com/Quinny/uWindsor-POTW-Leaderboard/blob/master/solution/models.py"'>
+                             'Please help</a>');
 
 
 # Receive the pre_delete signal and delete the file associated with the model instance.
