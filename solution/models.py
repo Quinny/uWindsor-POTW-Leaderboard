@@ -39,7 +39,7 @@ class Solution(models.Model):
         _, ext = path.splitext(self.source.name)
 
         return languages.get(ext, '<a href='
-                             '"https://github.com/Quinny/uWindsor-POTW-Leaderboard/blob/master/solution/models.py"'>
+                             '"https://github.com/Quinny/uWindsor-POTW-Leaderboard/blob/master/solution/models.py">'
                              'Please help</a>');
 
 

@@ -19,7 +19,7 @@
                     <a href="/solution/{{s.pk}}">{{ s.student }}</a>
                 </td>
                 <td>
-                  {{ s.programming_language }}
+                  {{ s.programming_language | safe }}
                 </td>
             </tr>
         {% endfor %}
