@@ -3,23 +3,24 @@ from student.models import Student
 from os import path
 
 languages = {
-    '.py' : 'Python',
+    '.asm' : 'Assembly',
     '.c' : 'C',
+    '.cc' : 'C++',
+    '.cs' : 'C#',
     '.cpp' : 'C++',
     '.cxx' : 'C++',
-    '.cc' : 'C++',
-    '.rs' : 'Rust',
-    '.js' : 'JavaScript',
-    '.java' : 'Java',
-    '.asm' : 'Assembly',
-    '.rb' : 'Ruby',
+    '.f03' : 'Fortran 2003'
+    '.f90' : 'Fortran 90',
+    '.f95' : 'Fortran 95',
     '.hs' : 'Haskell',
+    '.java' : 'Java',
+    '.js' : 'JavaScript',
     '.lhs' : 'Haskell',
     '.lol' : 'LOLCODE',
     '.lols' : 'LOLCODE',
-    '.f90' : 'Fortran 90',
-    '.f95' : 'Fortran 95',
-    '.f03' : 'Fortran 2003'
+    '.py' : 'Python',
+    '.rb' : 'Ruby',
+    '.rs' : 'Rust',
 }
 
 class Solution(models.Model):
