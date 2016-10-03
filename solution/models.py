@@ -9,7 +9,7 @@ languages = {
     '.cs' : 'C#',
     '.cpp' : 'C++',
     '.cxx' : 'C++',
-    '.f03' : 'Fortran 2003'
+    '.f03' : 'Fortran 2003',
     '.f90' : 'Fortran 90',
     '.f95' : 'Fortran 95',
     '.hs' : 'Haskell',
