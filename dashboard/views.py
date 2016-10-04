@@ -138,12 +138,31 @@ def accept_sub(request):
     s.accepted = True
     s.run_time = float(request.POST["run_time"])
     s.save()
+
     send_mail('uWindsor POTW - Submission Accepted',
             "Your submission for " + str(s) + " has been accepted!  Good work!",
             'noreply@potw.quinnftw.com',
             [str(s.student) + "@uwindsor.ca"],
             fail_silently=False)
+
     return redirect('/dashboard/submission/all')
+
+@login_required
+def backfill_runtimes(request):
+    need_runtimes = Solution.objects.filter(run_time=0.0)
+    return render(request, "dashboard/backfill.html", {"submissions" : need_runtimes})
+
+@login_required
+def backfill_submission(request, solution_id):
+    return render(request, "dashboard/backfill_sub.html", {"submission" : Solution.objects.get(pk = solution_id)})
+
+@login_required
+@require_http_methods(["POST"])
+def set_runtime(request):
+    s = Solution.objects.get(pk=request.POST['pk'])
+    s.run_time = float(request.POST["run_time"])
+    s.save()
+    return redirect('/dashboard/submission/backfill')
 
 @login_required
 @require_http_methods(["POST"])

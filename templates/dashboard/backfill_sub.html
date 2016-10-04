@@ -1,0 +1,61 @@
+{% extends 'dashboard/main.html' %}
+
+{% block content %}
+
+<h1>{{ submission.student }} {{ submission}}</h1>
+<hr />
+
+<button class="btn btn-default" id="select" onclick="SelectText('source')">
+    Select source
+</button>
+<br /><br />
+<pre id="source">
+    <code>
+{{ submission.source.read }}
+    </code>
+</pre>
+
+<form class="accept-form" method="POST" action="/dashboard/submission/set_runtime/">
+    {% csrf_token %}
+    <input type="hidden" name="pk" value="{{submission.pk}}">
+    Run time:
+    <input type="number" name="run_time" class="runtime" step="any"><br /><br />
+    <button type="submit" class="btn btn-primary">
+      Fill
+    </button>
+</form>
+
+<script>
+$(".accept-form").on("submit", function() {
+    if ($(".reason").val().length > 0) {
+        alert("Please erase the reason to decline before you accept");
+        return false;
+    }
+
+    if ($(".runtime").val().length == 0) {
+      alert("Please set a runtime");
+      return false;
+    }
+    return true;
+});
+
+function SelectText(element) {
+    var doc = document
+        , text = doc.getElementById(element)
+        , range, selection
+    ;
+    if (doc.body.createTextRange) {
+        range = document.body.createTextRange();
+        range.moveToElementText(text);
+        range.select();
+    } else if (window.getSelection) {
+        selection = window.getSelection();
+        range = document.createRange();
+        range.selectNodeContents(text);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+}
+</script>
+
+{% endblock %}
