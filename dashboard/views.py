@@ -136,6 +136,7 @@ def mark_submission(request, solution_id):
 def accept_sub(request):
     s = Solution.objects.get(pk=request.POST['pk'])
     s.accepted = True
+    s.run_time = float(request.POST["run_time"])
     s.save()
     send_mail('uWindsor POTW - Submission Accepted',
             "Your submission for " + str(s) + " has been accepted!  Good work!",

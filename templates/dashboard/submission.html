@@ -18,6 +18,8 @@
 <form class="accept-form" method="POST" action="/dashboard/submission/accept/">
     {% csrf_token %}
     <input type="hidden" name="pk" value="{{submission.pk}}">
+    Run time:
+    <input type="number" name="run_time" class="runtime" step="any"><br /><br />
     <button type="submit" class="btn btn-primary">
         Accept
     </button>
@@ -39,6 +41,11 @@ $(".accept-form").on("submit", function() {
     if ($(".reason").val().length > 0) {
         alert("Please erase the reason to decline before you accept");
         return false;
+    }
+
+    if ($(".runtime").val().length == 0) {
+      alert("Please set a runtime");
+      return false;
     }
     return true;
 });
