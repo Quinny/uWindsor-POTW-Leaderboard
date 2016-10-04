@@ -149,7 +149,7 @@ def accept_sub(request):
 
 @login_required
 def backfill_runtimes(request):
-    need_runtimes = Solution.objects.filter(run_time=0.0)
+    need_runtimes = Solution.objects.filter(run_time=0.0).order_by("-week")
     return render(request, "dashboard/backfill.html", {"submissions" : need_runtimes})
 
 @login_required
