@@ -31,6 +31,7 @@ class Solution(models.Model):
     public  = models.BooleanField(default=False)
     # Default set just to make django happy
     source  = models.FileField(upload_to = "source/%Y/%m/%d", default='settings.MEDIA_ROOT/helloworld.c')
+    run_time = models.FloatField(default=0.0)
 
     def __str__(self):
         return str(self.year) + " Week " + str(self.week)
