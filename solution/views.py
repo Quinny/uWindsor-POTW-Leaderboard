@@ -29,7 +29,11 @@ def add(request):
     extra = ""
     previous_solution = get_or_none(Solution, student=s, year=request.POST['year'],
             week=request.POST['week'])
-    if previous_solution is not None:
+    if previous_solution is not None and previous_solution.accepted:
+        return problem.views.problem_stats(request, request.POST['year'],
+                request.POST['week'], "You already have an accepted solution to this problem.")
+
+    if previous_solution is not None and not previous_solution.accepted:
         previous_solution.delete()
         extra = "<br />Your previous submission for this problem has been deleted"
 
