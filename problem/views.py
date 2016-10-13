@@ -1,9 +1,12 @@
-from django.shortcuts import render
-from student.models import Student
-from solution.models import Solution
-from problem.models import Problem
-from datetime import date
-from helpers import filter_or_none, get_or_none, any_none
+from django.shortcuts             import render
+from student.models               import Student
+from solution.models              import Solution
+from problem.models               import Problem
+from datetime                     import date
+from helpers                      import filter_or_none, get_or_none, any_none
+from django.http                  import HttpResponse
+from django.views.decorators.http import require_http_methods
+
 import errorpage
 
 def problem_stats(request, year, week, error=None, success=None):
@@ -32,3 +35,11 @@ def show_all(request):
         "problems": Problem.objects.filter(published=True).order_by("week"),
     }
     return render(request, "problem/all.html", context)
+
+# Secret message for POTW 7 2016
+@require_http_methods(["GET"])
+def secret_message(request):
+    response = HttpResponse()
+    response["secret_message"] = "Burton Howard Bloom"
+
+    return response
