@@ -36,6 +36,21 @@ def show_all(request):
     }
     return render(request, "problem/all.html", context)
 
+def preview(request, key):
+    problem = get_or_none(Problem, preview_key=key)
+    if problem is None:
+        return errorpage.views.index(request)
+
+    context = {
+        "solutions": [],
+        "problem": problem,
+        "percent": 0,
+        "error": None,
+        "success": None
+    }
+
+    return render(request, "problem/index.html", context)
+
 # Secret message for POTW 7 2016
 @require_http_methods(["GET"])
 def secret_message(request):

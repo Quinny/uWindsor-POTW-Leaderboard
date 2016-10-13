@@ -6,6 +6,7 @@ from problem.models import Problem
 from solution.models import Solution
 from django.core.mail import send_mail, send_mass_mail
 from django.views.decorators.http import require_http_methods
+from django.utils.crypto import get_random_string
 import random
 
 def index(request, error = None, success = None):
@@ -69,6 +70,7 @@ def add_problem(request):
                                week=request.POST['week'],
                                description=request.POST['description'],
                                nicename=request.POST['nicename'],
+                               preview_key = get_random_string(length=32),
                                published='publish' in request.POST)
     p.save()
     return redirect("/dashboard/")
@@ -103,6 +105,7 @@ def update_problem(request):
     to_update.description = request.POST['description']
     to_update.nicename = request.POST['nicename']
     to_update.presentation_url = request.POST['pres']
+    to_update.preview_key = request.POST['key']
     to_update.published = 'publish' in request.POST
 
     if 'notify' in request.POST:
