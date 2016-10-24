@@ -21,6 +21,7 @@ languages = {
     '.py' : 'Python',
     '.rb' : 'Ruby',
     '.rs' : 'Rust',
+    '.pl' : 'Prolog',
 }
 
 class Solution(models.Model):
