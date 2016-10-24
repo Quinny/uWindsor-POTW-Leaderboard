@@ -12,6 +12,7 @@ languages = {
     '.f03' : 'Fortran 2003',
     '.f90' : 'Fortran 90',
     '.f95' : 'Fortran 95',
+    '.go' : 'GoLang',
     '.hs' : 'Haskell',
     '.java' : 'Java',
     '.js' : 'JavaScript',
