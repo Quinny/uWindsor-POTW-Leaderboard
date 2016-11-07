@@ -19,6 +19,7 @@ languages = {
     '.lhs' : 'Haskell',
     '.lol' : 'LOLCODE',
     '.lols' : 'LOLCODE',
+    '.php' : 'PHP',
     '.py' : 'Python',
     '.rb' : 'Ruby',
     '.rs' : 'Rust',
