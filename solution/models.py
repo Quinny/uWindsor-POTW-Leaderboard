@@ -24,6 +24,7 @@ languages = {
     '.py' : 'Python',
     '.rb' : 'Ruby',
     '.rs' : 'Rust',
+    '.txt' : 'Text',
     '.pl' : 'Prolog',
 }
 
