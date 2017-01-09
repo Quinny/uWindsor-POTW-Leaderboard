@@ -5,14 +5,16 @@
 <h1> {{ solution.student }}'s solution for {{ solution }}</h1>
 <hr />
 
-{% if solution.accepted %}
-    <div class="alert alert-success">
-        Accepted
-    </div>
-{% else %}
-    <div class="alert alert-warning">
-        Pending acceptance
-    </div>
+{% if most_recent %}
+    {% if solution.accepted %}
+        <div class="alert alert-success">
+            Accepted
+        </div>
+    {% else %}
+        <div class="alert alert-warning">
+            Pending acceptance
+        </div>
+    {% endif %}
 {% endif %}
 
 {% if public %}
