@@ -40,3 +40,14 @@ def problem_solution_count(request):
         }
 
     return cors_json({'data': map(clean, problems)})
+
+def solution_languages(request):
+    solutions = Solution.objects.filter(accepted=True)
+    response = [
+        {
+          "week": solution.week,
+          "language": solution.programming_language()
+        }
+    for solution in solutions]
+
+    return cors_json({"data": response})
