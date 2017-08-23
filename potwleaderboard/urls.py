@@ -1,7 +1,7 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 import student
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^$',             include('student.urls')),
     url(r'^solvers/?$',    student.views.solvers),
     url(r'^student/?',     include('student.urls')),
@@ -13,4 +13,4 @@ urlpatterns = patterns('',
     url(r'^feed/?',        include('feed.urls')),
     url(r'^unsubscribe/(.*)/?$', student.views.unsubscribe),
     url(r'^.*$',           include('errorpage.urls')),
-)
+]

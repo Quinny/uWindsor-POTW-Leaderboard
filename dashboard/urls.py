@@ -1,7 +1,7 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 import views
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^$', views.index),
 
     url(r'^adduser/?$', views.add_user),
@@ -28,4 +28,4 @@ urlpatterns = patterns('',
     url(r'^changepassword/?$', views.change_password),
     url(r'^draw/gen/?$', views.draw_gen),
     url(r'^draw/?$', views.draw),
-)
+]
