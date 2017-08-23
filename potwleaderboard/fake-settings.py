@@ -23,7 +23,7 @@ SECRET_KEY = 's3cretz'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 TEMPLATE_DEBUG = True
-ALLOWED_HOSTS = [".quinnftw.com"]
+ALLOWED_HOSTS = [".quinnftw.com", "localhost"]
 
 # Application definition
 INSTALLED_APPS = (
@@ -84,14 +84,26 @@ STATICFILES_DIRS = (
         BASE_DIR + '/static/',
 )
 
-TEMPLATE_DIRS = (
-        BASE_DIR + '/templates/',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            BASE_DIR + "/templates/",
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 MEDIA_ROOT = BASE_DIR + '/uploads/'
 MEDIA_URL  = '/uploads/'
-
-
 
 EMAIL_USE_SSL = True
 EMAIL_HOST = ""
